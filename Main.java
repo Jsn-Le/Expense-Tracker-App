@@ -5,31 +5,41 @@ public class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(750,1000);
+            frame.setSize(750, 1000);
 
-            JPanel expensesPanel = new JPanel(new BorderLayout());
+            // Expense/Control Panel
+            JPanel expensePanel = new JPanel(new BorderLayout());
             JPanel controlPanel = new JPanel();
-            JButton createButton = new JButton("Create");
-            JButton updateButton = new JButton("Update");
-            JButton deleteButton = new JButton("Delete");
-            JButton clearButton = new JButton("Clear");
-            frame.add(expensesPanel, BorderLayout.CENTER);
+            frame.add(expensePanel, BorderLayout.CENTER);
             frame.add(controlPanel, BorderLayout.SOUTH);
-            controlPanel.add(createButton);
-            controlPanel.add(updateButton);
-            controlPanel.add(deleteButton);
-            controlPanel.add(clearButton);
 
+                // Control Panel Buttons
+                JButton createButton = new JButton("Create");
+                JButton updateButton = new JButton("Update");
+                JButton deleteButton = new JButton("Delete");
+                JButton clearButton = new JButton("Clear");
+                controlPanel.add(createButton);
+                controlPanel.add(updateButton);
+                controlPanel.add(deleteButton);
+                controlPanel.add(clearButton);
+
+            // JTable
             ExpenseManager expenseManager = new ExpenseManager();
             ExpenseJTable expenseJTable = new ExpenseJTable(expenseManager);
-            
+
             JTable jTable = new JTable(expenseJTable);
             JScrollPane scrollPane = new JScrollPane(jTable);
-            expensesPanel.add(scrollPane);
+            expensePanel.add(scrollPane);
 
+            // Control Panel Button Functions
+
+            // Visibility
             frame.setVisible(true);
+
         });
     }
 

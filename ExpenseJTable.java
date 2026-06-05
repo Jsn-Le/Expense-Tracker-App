@@ -35,7 +35,7 @@ public class ExpenseJTable extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Expense expense = expenseManager.findAllExpenses().get(rowIndex);
 
-        return switch (columnIndex) {
+        return switch(columnIndex) {
             case 0 -> expense.getItemName();
             case 1 -> expense.getCategory();
             case 2 -> expense.getItemCost();
