@@ -3,13 +3,15 @@ import java.time.*;
 public class Expense {
 
     final int id;
-    String itemName;
-    long itemCost;
-    LocalDate date;
+    private String itemName;
+    private String category;
+    private long itemCost;
+    private LocalDate date;
 
-    Expense (int id, String itemName, long itemCost, LocalDate date) {
+    Expense (int id, String itemName, String category, long itemCost, LocalDate date) {
         this.id = id;
         this.itemName = itemName;
+        this.category = category;
         this.itemCost = itemCost;
         this.date = date;
     }
@@ -22,6 +24,10 @@ public class Expense {
         return itemName;
     }
 
+    String getCategory() {
+        return category;
+    }
+
     long getItemCost() {
         return itemCost;
     }
@@ -32,6 +38,10 @@ public class Expense {
 
     void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    void setCategory(String category) {
+        this.category = category;
     }
 
     void setItemCost(long itemCost) {
