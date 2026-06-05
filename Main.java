@@ -23,6 +23,10 @@ public class Main {
             controlPanel.add(deleteButton);
             controlPanel.add(clearButton);
 
+            ExpenseJTable expenseJTable = new ExpenseJTable();
+
+            JTable jTable = new JTable(expenseJTable);
+
             frame.setVisible(true);
         });
     }
