@@ -57,4 +57,34 @@ public class ExpenseManager {
         return total;
     }
 
+    public List<Expense> filterByDate(LocalDate date) {
+        List<Expense> eList = new ArrayList<>();
+        for (Expense e : expenses) {
+            if (e.getDate().equals(date)) {
+                eList.add(e);
+            }
+        }
+        return eList;
+    }
+
+    public List<Expense> filterByDateRange(LocalDate startDate, LocalDate endDate) {
+        List<Expense> eList = new ArrayList<>();
+        for (Expense e : expenses) {
+            if (!e.getDate().isBefore(startDate) && !e.getDate().isAfter(endDate)) {
+                eList.add(e);
+            }
+        }
+        return eList;
+    }
+
+    public List<Expense> sortByDateAscending() {
+        expenses.sort(Comparator.comparing(e -> e.getDate()));
+        return expenses;
+    }
+
+    public List<Expense> sortByDateDescending() {
+        expenses.sort(Comparator.comparing((Expense e) -> e.getDate()).reversed());
+        return expenses;
+    }
+
 }
