@@ -5,10 +5,10 @@ public class Expense {
     final int id;
     private String itemName;
     private String category;
-    private long itemCost;
+    private double itemCost;
     private LocalDate date;
 
-    Expense (int id, String itemName, String category, long itemCost, LocalDate date) {
+    Expense (int id, String itemName, String category, double itemCost, LocalDate date) {
         this.id = id;
         this.itemName = itemName;
         this.category = category;
@@ -28,7 +28,7 @@ public class Expense {
         return category;
     }
 
-    long getItemCost() {
+    double getItemCost() {
         return itemCost;
     }
 
@@ -44,7 +44,7 @@ public class Expense {
         this.category = category;
     }
 
-    void setItemCost(long itemCost) {
+    void setItemCost(double itemCost) {
         this.itemCost = itemCost;
     }
 

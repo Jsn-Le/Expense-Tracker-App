@@ -108,4 +108,24 @@ public class ExpenseManager {
         return eList;
     }
 
+    public List<Expense> filterByCostRange(double minCost, double maxCost) {
+        List<Expense> eList = new ArrayList<>();
+        for (Expense expense : expenses) {
+            if (expense.getItemCost() >= minCost && expense.getItemCost() <= maxCost) {
+                eList.add(expense);
+            }
+        }
+        return eList;
+    }
+
+    public List<Expense> sortByCostAscending() {
+        expenses.sort(Comparator.comparing(e -> e.getItemCost()));
+        return expenses;
+    }
+
+    public List<Expense> sortByCostDescending() {
+        expenses.sort(Comparator.comparing((Expense e) -> e.getItemCost()).reversed());
+        return expenses;
+    }
+
 }
