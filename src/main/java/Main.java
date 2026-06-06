@@ -76,6 +76,8 @@ public class Main {
                 createPanel.add(costPanel);
                 JPanel datePanel = new JPanel(new GridLayout(1, 2));
                 createPanel.add(datePanel);
+                JPanel date2Panel = new JPanel(new GridLayout(1, 2));
+                createPanel.add(date2Panel);
                 JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
                 createPanel.add(buttonPanel);
 
@@ -118,6 +120,12 @@ public class Main {
 
                 LocalDate[] sharedDate = new LocalDate[1];
 
+                    // Selected Date Label
+                JLabel selectedDateLabel = new JLabel("Selected Date:");
+                date2Panel.add(selectedDateLabel);
+                JLabel selectedDate = new JLabel("None");
+                date2Panel.add(selectedDate);
+
                     // Date Panel Button + Function for Calendar
                 JButton selectDateButton = new JButton("Select Date");
                 datePanel.add(selectDateButton);
@@ -157,6 +165,7 @@ public class Main {
                         }
 
                         sharedDate[0] = convertedDate;
+                        selectedDate.setText("" + sharedDate[0]);
                         calendarDialog.dispose();
                     });
 
