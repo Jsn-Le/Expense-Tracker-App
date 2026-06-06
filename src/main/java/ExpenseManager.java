@@ -1,19 +1,23 @@
-import java.time.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ExpenseManager {
 
     private final List<Expense> expenses = new ArrayList<>();
     private int nextId = 1;
 
-    public void addExpense(String itemName, String category, long itemCost, LocalDate date) {
-        Expense expense = new Expense(nextId, itemName, category, itemCost, date);
+    public void addExpense(String itemName, String type, String category, double itemCost, LocalDate date) {
+        Expense expense = new Expense(nextId, itemName, type, category, itemCost, date);
         expenses.add(expense);
         nextId++;
     }
 
     public List<Expense> findAllExpenses() {
-        return new ArrayList<>(expenses);
+        return expenses;
     }
 
     public Expense findExpenseById(int id) {
@@ -31,6 +35,7 @@ public class ExpenseManager {
             return null;
         }
         expense.setItemName(updatedExpense.getItemName());
+        expense.setType(updatedExpense.getType());
         expense.setCategory(updatedExpense.getCategory());
         expense.setItemCost(updatedExpense.getItemCost());
         expense.setDate(updatedExpense.getDate());
@@ -50,8 +55,8 @@ public class ExpenseManager {
         expenses.clear();
     }
 
-    public long getTotalExpenses() {
-        long total = 0;
+    public double getTotalExpenses() {
+        double total = 0;
         for (Expense expense : expenses) {
             total += expense.getItemCost();
         }
@@ -88,6 +93,26 @@ public class ExpenseManager {
         return expenses;
     }
 
+    public Set<String> getAllTypes() {
+        HashSet<String> types = new HashSet<>();
+        for (Expense expense : expenses) {
+            types.add(expense.getType());
+        }
+        return types;
+    }
+
+    public List<Expense> filterByType(String type) {
+        List<Expense> eList = new ArrayList<>();
+        String cleanType = type.trim();
+        for (Expense expense : expenses) {
+            String expenseType = expense.getType().trim();
+            if (expenseType.equals(cleanType)) {
+                eList.add(expense);
+            }
+        }
+        return eList;
+    }
+
     public Set<String> getAllCategories() {
         HashSet<String> categories = new HashSet<>();
         for (Expense expense : expenses) {
@@ -98,9 +123,9 @@ public class ExpenseManager {
 
     public List<Expense> filterByCategory(String category) {
         List<Expense> eList = new ArrayList<>();
-        String cleanCategory = category.trim().toUpperCase();
+        String cleanCategory = category.trim();
         for (Expense expense : expenses) {
-            String expenseCategory = expense.getCategory().trim().toUpperCase();
+            String expenseCategory = expense.getCategory().trim();
             if (expenseCategory.equals(cleanCategory)) {
                 eList.add(expense);
             }

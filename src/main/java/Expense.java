@@ -1,16 +1,18 @@
-import java.time.*;
+import java.time.LocalDate;
 
 public class Expense {
 
     final int id;
     private String itemName;
+    private String type;
     private String category;
     private double itemCost;
     private LocalDate date;
 
-    Expense (int id, String itemName, String category, double itemCost, LocalDate date) {
+    Expense (int id, String itemName, String type, String category, double itemCost, LocalDate date) {
         this.id = id;
         this.itemName = itemName;
+        this.type = type;
         this.category = category;
         this.itemCost = itemCost;
         this.date = date;
@@ -22,6 +24,10 @@ public class Expense {
 
     String getItemName() {
         return itemName;
+    }
+
+    String getType() {
+        return type;
     }
 
     String getCategory() {
@@ -38,6 +44,10 @@ public class Expense {
 
     void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    void setType(String type) {
+        this.type = type;
     }
 
     void setCategory(String category) {

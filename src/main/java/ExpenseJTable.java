@@ -1,10 +1,11 @@
 import java.time.format.DateTimeFormatter;
+
 import javax.swing.table.AbstractTableModel;
 
 public class ExpenseJTable extends AbstractTableModel {
 
     private final ExpenseManager expenseManager;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public ExpenseJTable(ExpenseManager expenseManager) {
         this.expenseManager = expenseManager;
@@ -12,7 +13,7 @@ public class ExpenseJTable extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -24,9 +25,10 @@ public class ExpenseJTable extends AbstractTableModel {
     public String getColumnName(int column) {
         return switch(column) {
             case 0 -> "Item";
-            case 1 -> "Category";
-            case 2 -> "Cost";
-            case 3 -> "Date";
+            case 1 -> "Type";
+            case 2 -> "Category";
+            case 3 -> "Cost";
+            case 4 -> "Date";
             default -> null;
         };
     }
@@ -37,9 +39,10 @@ public class ExpenseJTable extends AbstractTableModel {
 
         return switch(columnIndex) {
             case 0 -> expense.getItemName();
-            case 1 -> expense.getCategory();
-            case 2 -> expense.getItemCost();
-            case 3 -> expense.getDate() != null
+            case 1 -> expense.getType();
+            case 2 -> expense.getCategory();
+            case 3 -> expense.getItemCost();
+            case 4 -> expense.getDate() != null
                         ? expense.getDate().format(formatter)
                         : "";
             default -> null;
@@ -48,6 +51,10 @@ public class ExpenseJTable extends AbstractTableModel {
 
     public Expense getExpenseAt(int rowIndex) {
         return expenseManager.findAllExpenses().get(rowIndex);
+    }
+
+    public void refresh() {
+        fireTableDataChanged();
     }
 
 }
