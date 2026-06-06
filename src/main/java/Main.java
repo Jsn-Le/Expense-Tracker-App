@@ -1,6 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import com.toedter.calendar.JCalendar;
 
 public class Main {
 
@@ -110,25 +116,73 @@ public class Main {
                 costPanel.add(costField);
                 datePanel.add(new JLabel("Date: "));
 
-                    // JCalendar Date Picker
-                
+                LocalDate[] sharedDate = new LocalDate[1];
+
+                    // Date Panel Button + Function for Calendar
+                JButton selectDateButton = new JButton("Select Date");
+                datePanel.add(selectDateButton);
+
+                selectDateButton.addActionListener(d -> {
+                    JDialog calendarDialog = new JDialog();
+                    calendarDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    calendarDialog.setSize(450,450);
+
+                    JPanel calendarPanel = new JPanel(new BorderLayout());
+                    JPanel button2Panel = new JPanel();
+                    calendarDialog.add(calendarPanel, BorderLayout.CENTER);
+                    calendarDialog.add(button2Panel, BorderLayout.SOUTH);
+
+                    JCalendar calendar = new JCalendar();
+                    calendarPanel.add(calendar);
+
+                    JButton confirmButton = new JButton("Confirm");
+                    button2Panel.add(confirmButton);
+                    JButton cancelButton = new JButton("Cancel");
+                    button2Panel.add(cancelButton);
+
+                    confirmButton.addActionListener(x -> {
+                        Date date = calendar.getDate();
+                        Instant instantDate = date.toInstant();
+                        ZonedDateTime zonedDate = instantDate.atZone(ZoneId.systemDefault());
+                        LocalDate convertedDate = zonedDate.toLocalDate();
+
+                        if (convertedDate.isAfter(LocalDate.now())) {
+                            JOptionPane.showMessageDialog(
+                                calendarDialog,
+                                "Selected date cannot be past the current date",
+                                "Input Error",
+                                JOptionPane.ERROR_MESSAGE
+                            ); 
+                            return;
+                        }
+
+                        sharedDate[0] = convertedDate;
+                        calendarDialog.dispose();
+                    });
+
+                    cancelButton.addActionListener(y -> {
+                        calendarDialog.dispose();
+                    });
+
+                    calendarDialog.setVisible(true);
+                });
 
                 // Create Panel Buttons
-                JButton createConfirmButton = new JButton("Confirm");
-                buttonPanel.add(createConfirmButton);
-                JButton createCancelButton = new JButton("Cancel");
-                buttonPanel.add(createCancelButton);
+                JButton confirmButton = new JButton("Confirm");
+                buttonPanel.add(confirmButton);
+                JButton cancelButton = new JButton("Cancel");
+                buttonPanel.add(cancelButton);
 
                 // Create Panel Button Functions
-                createConfirmButton.addActionListener(x -> {
+                confirmButton.addActionListener(x -> {
                     try {
                         String itemName = itemField.getText();
                         String selectedType = (String) typeBox.getSelectedItem();
                         String selectedCategory = (String) categoryBox.getSelectedItem();
                         String getCost = costField.getText();
-                        LocalDate date = LocalDate.now();
+                        LocalDate date = sharedDate[0];
 
-                        if (itemName.isBlank() || selectedCategory == null || getCost.isBlank()) {
+                        if (itemName.isBlank() || selectedCategory == null || getCost.isBlank() || date == null) {
                             JOptionPane.showMessageDialog(
                                 createDialog,
                                 "All fields must be filled",
@@ -153,7 +207,7 @@ public class Main {
                     }
                 });
 
-                createCancelButton.addActionListener(y -> {
+                cancelButton.addActionListener(y -> {
                     createDialog.dispose();
                 });
 
