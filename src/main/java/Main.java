@@ -29,25 +29,25 @@ public class Main {
             // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(750, 1000);
+            frame.setSize(900, 1000);
 
-            // Expense/Control Panel
+            // Expense/Control/Filter Panel
             JPanel expensePanel = new JPanel(new BorderLayout());
             JPanel controlPanel = new JPanel();
+            JPanel filterPanel = new JPanel();
             frame.add(expensePanel, BorderLayout.CENTER);
             frame.add(controlPanel, BorderLayout.SOUTH);
+            frame.add(filterPanel, BorderLayout.NORTH);
 
-                // Control Panel Buttons
-                JButton createButton = new JButton("Create");
-                JButton updateButton = new JButton("Update");
-                JButton deleteButton = new JButton("Delete");
-                JButton clearButton = new JButton("Clear");
-                JButton clearFiltersButton = new JButton("Clear Filters");
-                controlPanel.add(createButton);
-                controlPanel.add(updateButton);
-                controlPanel.add(deleteButton);
-                controlPanel.add(clearButton);
-                controlPanel.add(clearFiltersButton);
+            // Control Panel Buttons
+            JButton createButton = new JButton("Create");
+            JButton updateButton = new JButton("Update");
+            JButton deleteButton = new JButton("Delete");
+            JButton clearButton = new JButton("Clear");
+            controlPanel.add(createButton);
+            controlPanel.add(updateButton);
+            controlPanel.add(deleteButton);
+            controlPanel.add(clearButton);
 
             // JTable
             ExpenseManager expenseManager = new ExpenseManager();
@@ -461,6 +461,55 @@ public class Main {
             clearButton.addActionListener(e -> {
 
             });
+
+            // Filter Panel Buttons/ComboBox
+            JLabel filterLabel = new JLabel("Filters: ");
+            JLabel typeFilterLabel = new JLabel("Type Filter: ");
+            String[] typeFilters = {"", "Type", "Category"};
+            JComboBox<String> typeFilterBox = new JComboBox<>(typeFilters);
+            String[] personal = {"", "Housing", "Food", "Transportation", "Entertainment", "Health", "Other"};
+            String[] business = {"", "Payroll & Compensation", "Rent & Utilities", "Advertising & Marketing", "Software & Office Supplies", "Travel & Entertainment", "Other"};
+            JLabel categoryFilterLabel = new JLabel("Category Filter: ");
+            JComboBox<String> categoryFilterBox = new JComboBox<>();
+            JButton dateRangeFilter = new JButton("Date Range Filter");
+            JButton sortCostButton = new JButton("Cost: Descending");
+            JButton sortDateButton = new JButton("Date: Descending");
+            JButton clearFiltersButton = new JButton("Clear Filters");
+            filterPanel.add(filterLabel);
+            filterPanel.add(typeFilterLabel);
+            filterPanel.add(typeFilterBox);
+            filterPanel.add(categoryFilterLabel);
+            filterPanel.add(categoryFilterBox);
+            filterPanel.add(dateRangeFilter);
+            filterPanel.add(sortCostButton);
+            filterPanel.add(sortDateButton);
+            filterPanel.add(clearFiltersButton);
+
+            // typeFilterBox
+            typeFilterBox.addActionListener(t -> {
+                String select = (String) typeFilterBox.getSelectedItem();
+                categoryFilterBox.removeAllItems();
+                if ("Personal".equals(select)) {
+                    for (String i : personal) {
+                        categoryFilterBox.addItem(i);
+                    }
+                } else if ("Business".equals(select)) {
+                    for (String i : business) {
+                        categoryFilterBox.addItem(i);
+                    }
+                }
+            });
+
+            // categoryFilterBox
+
+
+            // dateRangeFilter
+
+
+            // sortCostButton
+
+
+            // sortDateButton
 
             // clearFiltersButton
             clearFiltersButton.addActionListener(e -> {
