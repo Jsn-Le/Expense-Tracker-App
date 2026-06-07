@@ -1,14 +1,17 @@
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 public class ExpenseJTable extends AbstractTableModel {
 
     private final ExpenseManager expenseManager;
+    private List<Expense> currentView;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public ExpenseJTable(ExpenseManager expenseManager) {
         this.expenseManager = expenseManager;
+        currentView = expenseManager.findAllExpenses();
     }
 
     @Override
@@ -18,7 +21,7 @@ public class ExpenseJTable extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return expenseManager.findAllExpenses().size();
+        return currentView.size();
     }
 
     @Override
@@ -35,7 +38,7 @@ public class ExpenseJTable extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Expense expense = expenseManager.findAllExpenses().get(rowIndex);
+        Expense expense = currentView.get(rowIndex);
 
         return switch(columnIndex) {
             case 0 -> expense.getItemName();
@@ -50,7 +53,12 @@ public class ExpenseJTable extends AbstractTableModel {
     }
 
     public Expense getExpenseAt(int rowIndex) {
-        return expenseManager.findAllExpenses().get(rowIndex);
+        return currentView.get(rowIndex);
+    }
+
+    public void resetFilters() {
+        currentView = expenseManager.findAllExpenses();
+        refresh();
     }
 
     public void refresh() {

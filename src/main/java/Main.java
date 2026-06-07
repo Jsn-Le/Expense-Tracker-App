@@ -42,10 +42,12 @@ public class Main {
                 JButton updateButton = new JButton("Update");
                 JButton deleteButton = new JButton("Delete");
                 JButton clearButton = new JButton("Clear");
+                JButton clearFiltersButton = new JButton("Clear Filters");
                 controlPanel.add(createButton);
                 controlPanel.add(updateButton);
                 controlPanel.add(deleteButton);
                 controlPanel.add(clearButton);
+                controlPanel.add(clearFiltersButton);
 
             // JTable
             ExpenseManager expenseManager = new ExpenseManager();
@@ -453,6 +455,16 @@ public class Main {
                     expenseManager.deleteExpense(id);
                     expenseJTable.refresh();
                 } 
+            });
+
+            // clearButton
+            clearButton.addActionListener(e -> {
+
+            });
+
+            // clearFiltersButton
+            clearFiltersButton.addActionListener(e -> {
+                
             });
 
             frame.setVisible(true);
