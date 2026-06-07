@@ -437,8 +437,25 @@ public class Main {
                 updateDialog.setVisible(true);
             });
 
-            frame.setVisible(true);
+            // deleteButton
+            deleteButton.addActionListener(e -> {
+                Expense row = expenseJTable.getExpenseAt(jTable.getSelectedRow());
+                int id = row.getId();
 
+                int result = JOptionPane.showConfirmDialog(
+                    frame,
+                    "Are you sure you want to delete this logged expense?",
+                    "Warning",
+                    JOptionPane.YES_NO_OPTION
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    expenseManager.deleteExpense(id);
+                    expenseJTable.refresh();
+                } 
+            });
+
+            frame.setVisible(true);
         });
     }
 
