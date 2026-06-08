@@ -26,10 +26,18 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
 
+            // Shared Filter Variables
+            String[] selectedFilterType = {""};
+            String[] selectedFilterCategory = {""};
+            boolean[] sortCost = {true};
+            boolean[] sortDate = {true};
+            LocalDate[] startDate = new LocalDate[1];
+            LocalDate[] endDate = new LocalDate[1];
+
             // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(900, 1000);
+            frame.setSize(1300, 1000);
 
             // Expense/Control/Filter Panel
             JPanel expensePanel = new JPanel(new BorderLayout());
@@ -465,55 +473,309 @@ public class Main {
             // Filter Panel Buttons/ComboBox
             JLabel filterLabel = new JLabel("Filters: ");
             JLabel typeFilterLabel = new JLabel("Type Filter: ");
-            String[] typeFilters = {"", "Type", "Category"};
+            String[] typeFilters = {"", "Personal", "Business"};
             JComboBox<String> typeFilterBox = new JComboBox<>(typeFilters);
             String[] personal = {"", "Housing", "Food", "Transportation", "Entertainment", "Health", "Other"};
             String[] business = {"", "Payroll & Compensation", "Rent & Utilities", "Advertising & Marketing", "Software & Office Supplies", "Travel & Entertainment", "Other"};
             JLabel categoryFilterLabel = new JLabel("Category Filter: ");
             JComboBox<String> categoryFilterBox = new JComboBox<>();
+            JButton applyFiltersButton = new JButton("Apply Filters");
+            JButton clearFiltersButton = new JButton("Clear Filters");
             JButton dateRangeFilter = new JButton("Date Range Filter");
             JButton sortCostButton = new JButton("Cost: Descending");
             JButton sortDateButton = new JButton("Date: Descending");
-            JButton clearFiltersButton = new JButton("Clear Filters");
+            JButton filterStateButton = new JButton("Filter State");
             filterPanel.add(filterLabel);
             filterPanel.add(typeFilterLabel);
             filterPanel.add(typeFilterBox);
             filterPanel.add(categoryFilterLabel);
             filterPanel.add(categoryFilterBox);
             filterPanel.add(dateRangeFilter);
+            filterPanel.add(applyFiltersButton);
+            filterPanel.add(clearFiltersButton);
             filterPanel.add(sortCostButton);
             filterPanel.add(sortDateButton);
-            filterPanel.add(clearFiltersButton);
+            filterPanel.add(filterStateButton);
 
             // typeFilterBox
             typeFilterBox.addActionListener(t -> {
                 String select = (String) typeFilterBox.getSelectedItem();
                 categoryFilterBox.removeAllItems();
-                if ("Personal".equals(select)) {
-                    for (String i : personal) {
-                        categoryFilterBox.addItem(i);
+                switch (select) {
+                    case "Personal" -> {
+                        for (String i : personal) {
+                            categoryFilterBox.addItem(i);
+                            selectedFilterType[0] = "Personal";
+                        }
                     }
-                } else if ("Business".equals(select)) {
-                    for (String i : business) {
-                        categoryFilterBox.addItem(i);
+                    case "Business" -> {
+                        for (String i : business) {
+                            categoryFilterBox.addItem(i);
+                            selectedFilterType[0] = "Business";
+                        }
+                    }
+                    case "" -> {
+                        categoryFilterBox.removeAllItems();
+                        selectedFilterType[0] = "";
                     }
                 }
             });
 
             // categoryFilterBox
-
+            categoryFilterBox.addActionListener(t -> {
+                String category = (String) categoryFilterBox.getSelectedItem();
+                selectedFilterCategory[0] = category;
+            });
 
             // dateRangeFilter
+            dateRangeFilter.addActionListener(e -> {
+                //Initial JDialog
+                JDialog dateRangeDialog = new JDialog();
+                dateRangeDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dateRangeDialog.setSize(400, 300);
 
+                // Panels
+                JPanel datePanel = new JPanel(new GridLayout(2, 3));
+                JPanel buttonPanel = new JPanel();
+                dateRangeDialog.add(datePanel, BorderLayout.CENTER);
+                dateRangeDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                // Labels/Buttons
+                JLabel startDateLabel = new JLabel("Start Date: ");
+                JLabel startDateLabel2 = new JLabel();
+                JButton startDateButton = new JButton("Select Date");
+                JLabel endDateLabel = new JLabel("End Date: ");
+                JLabel endDateLabel2 = new JLabel();
+                JButton endDateButton = new JButton("Select Date");
+                JButton confirmButton = new JButton("Confirm");
+                JButton cancelButton = new JButton("Cancel");
+                datePanel.add(startDateLabel);
+                datePanel.add(startDateLabel2);
+                datePanel.add(startDateButton);
+                datePanel.add(endDateLabel);
+                datePanel.add(endDateLabel2);
+                datePanel.add(endDateButton);
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                // startDateButton
+                startDateButton.addActionListener(b -> {
+                    JDialog calendarDialog = new JDialog();
+                    calendarDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    calendarDialog.setSize(450,450);
+
+                    JPanel calendarPanel = new JPanel(new BorderLayout());
+                    JPanel button2Panel = new JPanel();
+                    calendarDialog.add(calendarPanel, BorderLayout.CENTER);
+                    calendarDialog.add(button2Panel, BorderLayout.SOUTH);
+
+                    JCalendar calendar = new JCalendar();
+                    calendarPanel.add(calendar);
+
+                    JButton confirmButton2 = new JButton("Confirm");
+                    button2Panel.add(confirmButton2);
+                    JButton cancelButton2 = new JButton("Cancel");
+                    button2Panel.add(cancelButton2);
+
+                    confirmButton2.addActionListener(x -> {
+                        Date date = calendar.getDate();
+                        Instant instantDate = date.toInstant();
+                        ZonedDateTime zonedDate = instantDate.atZone(ZoneId.systemDefault());
+                        LocalDate convertedDate = zonedDate.toLocalDate();
+
+                        if (convertedDate.isAfter(LocalDate.now())) {
+                            JOptionPane.showMessageDialog(
+                                calendarDialog,
+                                "Selected date cannot be past the current date",
+                                "Input Error",
+                                JOptionPane.ERROR_MESSAGE
+                            ); 
+                            return;
+                        }
+                        if (endDate[0] != null) {
+                            if (convertedDate.isAfter(endDate[0])) {
+                            JOptionPane.showMessageDialog(
+                                calendarDialog,
+                                "Selected date cannot be after end date",
+                                "Input Error",
+                                JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                            }
+                        }
+
+                        startDate[0] = convertedDate;
+                        startDateLabel2.setText(String.valueOf(startDate[0]));
+                        calendarDialog.dispose();
+                    });
+
+                    cancelButton2.addActionListener(y -> {
+                        calendarDialog.dispose();
+                    });
+
+                    calendarDialog.setVisible(true);
+                });
+
+                // endDateButton
+                endDateButton.addActionListener(b -> {
+                    JDialog calendarDialog = new JDialog();
+                    calendarDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    calendarDialog.setSize(450,450);
+
+                    JPanel calendarPanel = new JPanel(new BorderLayout());
+                    JPanel button2Panel = new JPanel();
+                    calendarDialog.add(calendarPanel, BorderLayout.CENTER);
+                    calendarDialog.add(button2Panel, BorderLayout.SOUTH);
+
+                    JCalendar calendar = new JCalendar();
+                    calendarPanel.add(calendar);
+
+                    JButton confirmButton2 = new JButton("Confirm");
+                    button2Panel.add(confirmButton2);
+                    JButton cancelButton2 = new JButton("Cancel");
+                    button2Panel.add(cancelButton2);
+
+                    confirmButton2.addActionListener(x -> {
+                        Date date = calendar.getDate();
+                        Instant instantDate = date.toInstant();
+                        ZonedDateTime zonedDate = instantDate.atZone(ZoneId.systemDefault());
+                        LocalDate convertedDate = zonedDate.toLocalDate();
+
+                        if (convertedDate.isAfter(LocalDate.now())) {
+                            JOptionPane.showMessageDialog(
+                                calendarDialog,
+                                "Selected date cannot be past the current date",
+                                "Input Error",
+                                JOptionPane.ERROR_MESSAGE
+                            ); 
+                            return;
+                        }
+                        if (startDate[0] != null) {
+                            if (convertedDate.isBefore(startDate[0])) {
+                            JOptionPane.showMessageDialog(
+                                calendarDialog,
+                                "Selected date cannot be before start date",
+                                "Input Error",
+                                JOptionPane.ERROR_MESSAGE
+                            );
+                            return;
+                            }
+                        }
+
+                        endDate[0] = convertedDate;
+                        endDateLabel2.setText(String.valueOf(endDate[0]));
+                        calendarDialog.dispose();
+                    });
+
+                    cancelButton2.addActionListener(y -> {
+                        calendarDialog.dispose();
+                    });
+
+                    calendarDialog.setVisible(true);
+                });
+
+                // confirmButton
+                confirmButton.addActionListener(a -> {
+                    dateRangeDialog.dispose();
+                });
+
+                // cancelButton
+                cancelButton.addActionListener(a -> {
+                    dateRangeDialog.dispose();
+                });
+
+                dateRangeDialog.setVisible(true);
+            });
 
             // sortCostButton
-
+            sortCostButton.addActionListener(e -> {
+                if (sortCost[0]) {
+                    sortCost[0] = false;
+                    sortCostButton.setText("Cost: Ascending");
+                } else {
+                    sortCost[0] = true;
+                    sortCostButton.setText("Cost: Descending");
+                }
+            });
 
             // sortDateButton
+            sortDateButton.addActionListener(e -> {
+                if (sortDate[0]) {
+                    sortDate[0] = false;
+                    sortDateButton.setText("Date: Ascending");
+                } else {
+                    sortDate[0] = true;
+                    sortDateButton.setText("Date: Descending");
+                }
+            });
+
+            // applyFiltersButton
+            applyFiltersButton.addActionListener(e -> {
+
+            });
 
             // clearFiltersButton
             clearFiltersButton.addActionListener(e -> {
                 
+            });
+
+            // filterStateButton
+            filterStateButton.addActionListener(e -> {
+                // Initial JDialog
+                JDialog filterStateDialog = new JDialog();
+                filterStateDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                filterStateDialog.setSize(400, 300);
+
+                // Panels
+                JPanel filtersPanel = new JPanel(new GridLayout(3, 2));
+                JPanel buttonPanel = new JPanel();
+                filterStateDialog.add(filtersPanel, BorderLayout.CENTER);
+                filterStateDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                // Labels/Buttons + Variables
+                String typeText = selectedFilterType[0];
+                if (typeText == null || typeText.isBlank()) {
+                    typeText = "None";
+                }
+                String categoryText = selectedFilterCategory[0];
+                if (categoryText == null || categoryText.isBlank()) {
+                    categoryText = "None";
+                }
+                String startDateText = (startDate[0] == null) ? "None" : startDate[0].toString();
+                String endDateText = (endDate[0] == null) ? "None" : endDate[0].toString();
+                String sortCostText;
+                if (sortCost[0]) {
+                    sortCostText = "Cost: Descending";
+                } else {
+                    sortCostText = "Cost: Ascending";
+                }
+                String sortDateText;
+                if (sortDate[0]) {
+                    sortDateText = "Date: Descending";
+                } else {
+                    sortDateText = "Date: Ascending";
+                }
+
+                JLabel typeFilterLabel2 = new JLabel("Type Filter: " + typeText);
+                JLabel categoryFilterLabel2 = new JLabel("Category Filter: " + categoryText);
+                JLabel startDateLabel = new JLabel("Start Date: " + startDateText);
+                JLabel endDateLabel = new JLabel("End Date: " + endDateText);
+                JLabel sortCostLabel = new JLabel(sortCostText);
+                JLabel sortDateLabel = new JLabel(sortDateText);
+                JButton returnButton = new JButton("Return");
+                filtersPanel.add(typeFilterLabel2);
+                filtersPanel.add(categoryFilterLabel2);
+                filtersPanel.add(startDateLabel);
+                filtersPanel.add(endDateLabel);
+                filtersPanel.add(sortCostLabel);
+                filtersPanel.add(sortDateLabel);
+                buttonPanel.add(returnButton);
+
+                returnButton.addActionListener(c -> {
+                    filterStateDialog.dispose();
+                });
+
+                filterStateDialog.setVisible(true);
             });
 
             frame.setVisible(true);

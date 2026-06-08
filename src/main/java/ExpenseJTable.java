@@ -56,6 +56,11 @@ public class ExpenseJTable extends AbstractTableModel {
         return currentView.get(rowIndex);
     }
 
+    public void refreshView() {
+        currentView = expenseManager.findAllExpenses();
+        
+    }
+
     public void resetFilters() {
         currentView = expenseManager.findAllExpenses();
         refresh();
