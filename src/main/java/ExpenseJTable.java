@@ -83,15 +83,11 @@ public class ExpenseJTable extends AbstractTableModel {
         if (Main.startDate != null && Main.endDate != null) {
             currentView = expenseManager.filterByDateRange(currentView, Main.startDate, Main.endDate);
         }
-        refresh();
+        fireTableDataChanged();
     }
 
     public void resetFilters() {
         currentView = expenseManager.findAllExpenses();
-        refresh();
-    }
-
-    public void refresh() {
         fireTableDataChanged();
     }
 

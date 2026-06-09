@@ -218,7 +218,7 @@ public class Main {
 
                         expenseManager.addExpense(itemName,selectedType, selectedCategory, cost, date);
                         createDialog.dispose();
-                        expenseJTable.refresh();
+                        expenseJTable.refreshView();
                     } catch (NumberFormatException z) {
                         JOptionPane.showMessageDialog(
                             createDialog,
@@ -431,7 +431,7 @@ public class Main {
 
                         expenseManager.updateExpense(id, updatedExpense);
                         updateDialog.dispose();
-                        expenseJTable.refresh();
+                        expenseJTable.refreshView();
                     } catch (NumberFormatException z) {
                         JOptionPane.showMessageDialog(
                             updateDialog,
@@ -463,7 +463,7 @@ public class Main {
 
                 if (result == JOptionPane.YES_OPTION) {
                     expenseManager.deleteExpense(id);
-                    expenseJTable.refresh();
+                    expenseJTable.refreshView();
                 } 
             });
 
@@ -566,6 +566,15 @@ public class Main {
                         JOptionPane.showMessageDialog(
                             costRangeDialog,
                             "Min cannot be greater than Max",
+                            "Input Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+                    if (getMinCost < 0 || getMaxCost < 0) {
+                        JOptionPane.showMessageDialog(
+                            costRangeDialog,
+                            "Min/Max cannot be lower than 0",
                             "Input Error",
                             JOptionPane.ERROR_MESSAGE
                         );
@@ -770,7 +779,7 @@ public class Main {
                     sortCost = false;
                     sortCostButton.setText("Cost: Ascending");
                     expenseJTable.refreshView(); 
-                } else {
+                } else if (sortCost == false) {
                     sortCost = true;
                     sortCostButton.setText("Cost: Descending");
                     expenseJTable.refreshView(); 
@@ -783,7 +792,7 @@ public class Main {
                     sortDate = false;
                     sortDateButton.setText("Date: Ascending");
                     expenseJTable.refreshView(); 
-                } else {
+                } else if ( sortDate == false) {
                     sortDate = true;
                     sortDateButton.setText("Date: Descending");
                     expenseJTable.refreshView(); 
