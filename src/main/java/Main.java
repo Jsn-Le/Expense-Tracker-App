@@ -66,6 +66,7 @@ public class Main {
             JTable jTable = new JTable(expenseJTable);
             JScrollPane scrollPane = new JScrollPane(jTable);
             expensePanel.add(scrollPane);
+            expenseJTable.refreshView();
 
             // Control Panel Button Functions
             // createButton
