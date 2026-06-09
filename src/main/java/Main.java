@@ -23,21 +23,23 @@ import com.toedter.calendar.JCalendar;
 
 public class Main {
 
+    // Shared Filter Variables
+    static String selectedFilterType = "";
+    static String selectedFilterCategory = "";
+    static boolean sortCost = true;
+    static boolean sortDate = true;
+    static Double minCost;
+    static Double maxCost;
+    static LocalDate startDate;
+    static LocalDate endDate;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-
-            // Shared Filter Variables
-            String[] selectedFilterType = {""};
-            String[] selectedFilterCategory = {""};
-            boolean[] sortCost = {true};
-            boolean[] sortDate = {true};
-            LocalDate[] startDate = new LocalDate[1];
-            LocalDate[] endDate = new LocalDate[1];
 
             // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1300, 1000);
+            frame.setSize(1400, 1000);
 
             // Expense/Control/Filter Panel
             JPanel expensePanel = new JPanel(new BorderLayout());
@@ -100,7 +102,7 @@ public class Main {
                 categoryPanel.add(new JLabel("Category: "));
 
                     // Category ComboBox
-                String[] type = {"Personal", "Business"};
+                String[] type = {"", "Personal", "Business"};
                 JComboBox<String> typeBox = new JComboBox<>(type);
                 typePanel.add(typeBox);
 
@@ -471,7 +473,6 @@ public class Main {
             });
 
             // Filter Panel Buttons/ComboBox
-            JLabel filterLabel = new JLabel("Filters: ");
             JLabel typeFilterLabel = new JLabel("Type Filter: ");
             String[] typeFilters = {"", "Personal", "Business"};
             JComboBox<String> typeFilterBox = new JComboBox<>(typeFilters);
@@ -481,15 +482,16 @@ public class Main {
             JComboBox<String> categoryFilterBox = new JComboBox<>();
             JButton applyFiltersButton = new JButton("Apply Filters");
             JButton clearFiltersButton = new JButton("Clear Filters");
+            JButton costRangeFilter = new JButton("Cost Range Filter");
             JButton dateRangeFilter = new JButton("Date Range Filter");
             JButton sortCostButton = new JButton("Cost: Descending");
             JButton sortDateButton = new JButton("Date: Descending");
             JButton filterStateButton = new JButton("Filter State");
-            filterPanel.add(filterLabel);
             filterPanel.add(typeFilterLabel);
             filterPanel.add(typeFilterBox);
             filterPanel.add(categoryFilterLabel);
             filterPanel.add(categoryFilterBox);
+            filterPanel.add(costRangeFilter);
             filterPanel.add(dateRangeFilter);
             filterPanel.add(applyFiltersButton);
             filterPanel.add(clearFiltersButton);
@@ -505,18 +507,18 @@ public class Main {
                     case "Personal" -> {
                         for (String i : personal) {
                             categoryFilterBox.addItem(i);
-                            selectedFilterType[0] = "Personal";
+                            selectedFilterType = "Personal";
                         }
                     }
                     case "Business" -> {
                         for (String i : business) {
                             categoryFilterBox.addItem(i);
-                            selectedFilterType[0] = "Business";
+                            selectedFilterType = "Business";
                         }
                     }
                     case "" -> {
                         categoryFilterBox.removeAllItems();
-                        selectedFilterType[0] = "";
+                        selectedFilterType = "";
                     }
                 }
             });
@@ -524,7 +526,72 @@ public class Main {
             // categoryFilterBox
             categoryFilterBox.addActionListener(t -> {
                 String category = (String) categoryFilterBox.getSelectedItem();
-                selectedFilterCategory[0] = category;
+                selectedFilterCategory = category;
+            });
+
+            // costRangeFilter
+            costRangeFilter.addActionListener(e -> {
+                //Initial JDialog
+                JDialog costRangeDialog = new JDialog();
+                costRangeDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                costRangeDialog.setSize(300, 150);
+
+                // Panels
+                JPanel costPanel = new JPanel(new GridLayout(2, 2));
+                JPanel buttonPanel = new JPanel();
+                costRangeDialog.add(costPanel, BorderLayout.CENTER);
+                costRangeDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+                // Labels/TextFields/Buttons
+                JLabel minCostLabel = new JLabel("Min");
+                JTextField minCostField = new JTextField();
+                JLabel maxCostLabel = new JLabel("Max");
+                JTextField maxCostField = new JTextField();
+                JButton confirmButton = new JButton("Confirm");
+                JButton cancelButton = new JButton("Cancel");
+                costPanel.add(minCostLabel);
+                costPanel.add(minCostField);
+                costPanel.add(maxCostLabel);
+                costPanel.add(maxCostField);
+                buttonPanel.add(confirmButton);
+                buttonPanel.add(cancelButton);
+
+                // confirmButton
+                confirmButton.addActionListener(a -> {
+                    try {
+                    double getMinCost = Double.parseDouble(minCostField.getText());
+                    double getMaxCost = Double.parseDouble(maxCostField.getText());
+
+                    if (getMinCost > getMaxCost) {
+                        JOptionPane.showMessageDialog(
+                            costRangeDialog,
+                            "Min cannot be greater than Max",
+                            "Input Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+
+                    minCost = getMinCost;
+                    maxCost = getMaxCost;
+                    costRangeDialog.dispose();
+                    } catch (NumberFormatException z){
+                        JOptionPane.showMessageDialog(
+                            costRangeDialog,
+                            "Cost must be a valid number",
+                            "Input Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+
+                });
+
+                // cancelButton
+                cancelButton.addActionListener(a -> {
+                    costRangeDialog.dispose();
+                });
+
+                costRangeDialog.setVisible(true);
             });
 
             // dateRangeFilter
@@ -592,8 +659,8 @@ public class Main {
                             ); 
                             return;
                         }
-                        if (endDate[0] != null) {
-                            if (convertedDate.isAfter(endDate[0])) {
+                        if (endDate != null) {
+                            if (convertedDate.isAfter(endDate)) {
                             JOptionPane.showMessageDialog(
                                 calendarDialog,
                                 "Selected date cannot be after end date",
@@ -604,8 +671,8 @@ public class Main {
                             }
                         }
 
-                        startDate[0] = convertedDate;
-                        startDateLabel2.setText(String.valueOf(startDate[0]));
+                        startDate = convertedDate;
+                        startDateLabel2.setText(String.valueOf(startDate));
                         calendarDialog.dispose();
                     });
 
@@ -650,8 +717,8 @@ public class Main {
                             ); 
                             return;
                         }
-                        if (startDate[0] != null) {
-                            if (convertedDate.isBefore(startDate[0])) {
+                        if (startDate != null) {
+                            if (convertedDate.isBefore(startDate)) {
                             JOptionPane.showMessageDialog(
                                 calendarDialog,
                                 "Selected date cannot be before start date",
@@ -662,8 +729,8 @@ public class Main {
                             }
                         }
 
-                        endDate[0] = convertedDate;
-                        endDateLabel2.setText(String.valueOf(endDate[0]));
+                        endDate = convertedDate;
+                        endDateLabel2.setText(String.valueOf(endDate));
                         calendarDialog.dispose();
                     });
 
@@ -676,6 +743,16 @@ public class Main {
 
                 // confirmButton
                 confirmButton.addActionListener(a -> {
+                    if (startDate == null || endDate == null) {
+                        JOptionPane.showMessageDialog(
+                            dateRangeDialog,
+                            "Both dates must be selected",
+                            "Input Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+
                     dateRangeDialog.dispose();
                 });
 
@@ -689,23 +766,27 @@ public class Main {
 
             // sortCostButton
             sortCostButton.addActionListener(e -> {
-                if (sortCost[0]) {
-                    sortCost[0] = false;
+                if (sortCost) {
+                    sortCost = false;
                     sortCostButton.setText("Cost: Ascending");
+                    expenseJTable.refreshView(); 
                 } else {
-                    sortCost[0] = true;
+                    sortCost = true;
                     sortCostButton.setText("Cost: Descending");
+                    expenseJTable.refreshView(); 
                 }
             });
 
             // sortDateButton
             sortDateButton.addActionListener(e -> {
-                if (sortDate[0]) {
-                    sortDate[0] = false;
+                if (sortDate) {
+                    sortDate = false;
                     sortDateButton.setText("Date: Ascending");
+                    expenseJTable.refreshView(); 
                 } else {
-                    sortDate[0] = true;
+                    sortDate = true;
                     sortDateButton.setText("Date: Descending");
+                    expenseJTable.refreshView(); 
                 }
             });
 
@@ -733,24 +814,24 @@ public class Main {
                 filterStateDialog.add(buttonPanel, BorderLayout.SOUTH);
 
                 // Labels/Buttons + Variables
-                String typeText = selectedFilterType[0];
+                String typeText = selectedFilterType;
                 if (typeText == null || typeText.isBlank()) {
                     typeText = "None";
                 }
-                String categoryText = selectedFilterCategory[0];
+                String categoryText = selectedFilterCategory;
                 if (categoryText == null || categoryText.isBlank()) {
                     categoryText = "None";
                 }
-                String startDateText = (startDate[0] == null) ? "None" : startDate[0].toString();
-                String endDateText = (endDate[0] == null) ? "None" : endDate[0].toString();
+                String startDateText = (startDate == null) ? "None" : startDate.toString();
+                String endDateText = (endDate == null) ? "None" : endDate.toString();
                 String sortCostText;
-                if (sortCost[0]) {
+                if (sortCost) {
                     sortCostText = "Cost: Descending";
                 } else {
                     sortCostText = "Cost: Ascending";
                 }
                 String sortDateText;
-                if (sortDate[0]) {
+                if (sortDate) {
                     sortDateText = "Date: Descending";
                 } else {
                     sortDateText = "Date: Ascending";

@@ -63,9 +63,9 @@ public class ExpenseManager {
         return total;
     }
 
-    public List<Expense> filterByDate(LocalDate date) {
+    public List<Expense> filterByDate(List<Expense> list, LocalDate date) {
         List<Expense> eList = new ArrayList<>();
-        for (Expense expense : expenses) {
+        for (Expense expense : list) {
             if (expense.getDate().equals(date)) {
                 eList.add(expense);
             }
@@ -73,9 +73,9 @@ public class ExpenseManager {
         return eList;
     }
 
-    public List<Expense> filterByDateRange(LocalDate startDate, LocalDate endDate) {
+    public List<Expense> filterByDateRange(List<Expense> list, LocalDate startDate, LocalDate endDate) {
         List<Expense> eList = new ArrayList<>();
-        for (Expense expense : expenses) {
+        for (Expense expense : list) {
             if (!expense.getDate().isBefore(startDate) && !expense.getDate().isAfter(endDate)) {
                 eList.add(expense);
             }
@@ -83,14 +83,20 @@ public class ExpenseManager {
         return eList;
     }
 
-    public List<Expense> sortByDateAscending() {
-        expenses.sort(Comparator.comparing(e -> e.getDate()));
-        return expenses;
+    public List<Expense> sortByDateAscending(List<Expense> list) {
+        List<Expense> sorted = new ArrayList<>(list);
+
+        sorted.sort(Comparator.comparing(e -> e.getDate()));
+
+        return sorted;
     }
 
-    public List<Expense> sortByDateDescending() {
-        expenses.sort(Comparator.comparing((Expense e) -> e.getDate()).reversed());
-        return expenses;
+    public List<Expense> sortByDateDescending(List<Expense> list) {
+        List<Expense> sorted = new ArrayList<>(list);
+
+        sorted.sort(Comparator.comparing((Expense e) -> e.getDate()).reversed());
+        
+        return sorted;
     }
 
     public Set<String> getAllTypes() {
@@ -101,10 +107,10 @@ public class ExpenseManager {
         return types;
     }
 
-    public List<Expense> filterByType(String type) {
+    public List<Expense> filterByType(List<Expense> list, String type) {
         List<Expense> eList = new ArrayList<>();
         String cleanType = type.trim();
-        for (Expense expense : expenses) {
+        for (Expense expense : list) {
             String expenseType = expense.getType().trim();
             if (expenseType.equals(cleanType)) {
                 eList.add(expense);
@@ -121,10 +127,10 @@ public class ExpenseManager {
         return categories;
     }
 
-    public List<Expense> filterByCategory(String category) {
+    public List<Expense> filterByCategory(List<Expense> list, String category) {
         List<Expense> eList = new ArrayList<>();
         String cleanCategory = category.trim();
-        for (Expense expense : expenses) {
+        for (Expense expense : list) {
             String expenseCategory = expense.getCategory().trim();
             if (expenseCategory.equals(cleanCategory)) {
                 eList.add(expense);
@@ -133,9 +139,9 @@ public class ExpenseManager {
         return eList;
     }
 
-    public List<Expense> filterByCostRange(double minCost, double maxCost) {
+    public List<Expense> filterByCostRange(List<Expense> list, double minCost, double maxCost) {
         List<Expense> eList = new ArrayList<>();
-        for (Expense expense : expenses) {
+        for (Expense expense : list) {
             if (expense.getItemCost() >= minCost && expense.getItemCost() <= maxCost) {
                 eList.add(expense);
             }
@@ -143,14 +149,20 @@ public class ExpenseManager {
         return eList;
     }
 
-    public List<Expense> sortByCostAscending() {
-        expenses.sort(Comparator.comparing(e -> e.getItemCost()));
-        return expenses;
+    public List<Expense> sortByCostAscending(List<Expense> list) {
+        List<Expense> sorted = new ArrayList<>(list);
+
+        sorted.sort(Comparator.comparing(e -> e.getItemCost()));
+
+        return sorted;
     }
 
-    public List<Expense> sortByCostDescending() {
-        expenses.sort(Comparator.comparing((Expense e) -> e.getItemCost()).reversed());
-        return expenses;
+    public List<Expense> sortByCostDescending(List<Expense> list) {
+        List<Expense> sorted = new ArrayList<>(list);
+
+        sorted.sort(Comparator.comparing((Expense e) -> e.getItemCost()).reversed());
+
+        return sorted;
     }
 
 }
