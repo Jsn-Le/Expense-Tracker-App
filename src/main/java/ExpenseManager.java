@@ -51,8 +51,8 @@ public class ExpenseManager {
         return true;
     }
 
-    public void deleteVisibleExpenses(List<Integer> ids) {
-        expenses.removeIf(expense -> ids.contains(expense.getId()));
+    public void deleteVisibleExpenses(List<Expense> visibleExpenses) {
+        expenses.removeAll(visibleExpenses);
     }
 
     public double getTotalExpenses() {

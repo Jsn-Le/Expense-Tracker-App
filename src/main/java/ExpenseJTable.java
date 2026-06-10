@@ -56,6 +56,37 @@ public class ExpenseJTable extends AbstractTableModel {
         return currentView.get(rowIndex);
     }
 
+    public List<Expense> getVisibleExpenses() {
+        currentView = expenseManager.findAllExpenses();
+        
+        if (!Main.selectedFilterType.isBlank()) {
+            currentView = expenseManager.filterByType(currentView, Main.selectedFilterType);
+        }
+        if (!Main.selectedFilterCategory.isBlank()) {
+            currentView = expenseManager.filterByCategory(currentView, Main.selectedFilterCategory);
+        }
+        if (Main.sortCost) {
+            currentView = expenseManager.sortByCostDescending(currentView);
+        }
+        if (Main.sortCost == false) {
+            currentView = expenseManager.sortByCostAscending(currentView);
+        }
+        if (Main.sortDate) {
+            currentView = expenseManager.sortByDateDescending(currentView);
+        }
+        if (Main.sortDate == false) {
+            currentView = expenseManager.sortByDateAscending(currentView);
+        }
+        if (Main.minCost != null && Main.maxCost != null) {
+            currentView = expenseManager.filterByCostRange(currentView, Main.minCost, Main.maxCost);
+        }
+        if (Main.startDate != null && Main.endDate != null) {
+            currentView = expenseManager.filterByDateRange(currentView, Main.startDate, Main.endDate);
+        }
+
+        return currentView;
+    }
+
     public void refreshView() {
         currentView = expenseManager.findAllExpenses();
         
@@ -87,8 +118,16 @@ public class ExpenseJTable extends AbstractTableModel {
     }
 
     public void resetFilters() {
-        currentView = expenseManager.findAllExpenses();
-        fireTableDataChanged();
+        Main.selectedFilterType = "";
+        Main.selectedFilterCategory = "";
+        Main.sortCost = true;
+        Main.sortDate = true;
+        Main.minCost = null;
+        Main.maxCost = null;
+        Main.startDate = null;
+        Main.endDate = null;
+
+        refreshView();
     }
 
 }

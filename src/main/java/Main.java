@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -470,7 +471,9 @@ public class Main {
 
             // clearButton
             clearButton.addActionListener(e -> {
-
+                List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                expenseManager.deleteVisibleExpenses(expenses);
+                expenseJTable.refreshView();
             });
 
             // Filter Panel Buttons/ComboBox
@@ -802,12 +805,19 @@ public class Main {
 
             // applyFiltersButton
             applyFiltersButton.addActionListener(e -> {
-
+                expenseJTable.refreshView();
             });
 
             // clearFiltersButton
             clearFiltersButton.addActionListener(e -> {
-                
+                sortCostButton.setText("Cost: Descending");
+                sortDateButton.setText("Date: Descending");
+                selectedFilterType = "";
+                selectedFilterCategory = "";
+                typeFilterBox.setSelectedItem("");
+                categoryFilterBox.removeAllItems();
+
+                expenseJTable.resetFilters();
             });
 
             // filterStateButton
@@ -815,10 +825,10 @@ public class Main {
                 // Initial JDialog
                 JDialog filterStateDialog = new JDialog();
                 filterStateDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                filterStateDialog.setSize(400, 300);
+                filterStateDialog.setSize(500, 300);
 
                 // Panels
-                JPanel filtersPanel = new JPanel(new GridLayout(3, 2));
+                JPanel filtersPanel = new JPanel(new GridLayout(4, 2));
                 JPanel buttonPanel = new JPanel();
                 filterStateDialog.add(filtersPanel, BorderLayout.CENTER);
                 filterStateDialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -832,6 +842,8 @@ public class Main {
                 if (categoryText == null || categoryText.isBlank()) {
                     categoryText = "None";
                 }
+                String minCostText = (minCost == null) ? "None" : minCost.toString();
+                String maxCostText = (maxCost == null) ? "None" : maxCost.toString();
                 String startDateText = (startDate == null) ? "None" : startDate.toString();
                 String endDateText = (endDate == null) ? "None" : endDate.toString();
                 String sortCostText;
@@ -849,6 +861,8 @@ public class Main {
 
                 JLabel typeFilterLabel2 = new JLabel("Type Filter: " + typeText);
                 JLabel categoryFilterLabel2 = new JLabel("Category Filter: " + categoryText);
+                JLabel minCostLabel = new JLabel("Min Cost: " + minCostText);
+                JLabel maxCostLabel = new JLabel("Max Cost: " + maxCostText);
                 JLabel startDateLabel = new JLabel("Start Date: " + startDateText);
                 JLabel endDateLabel = new JLabel("End Date: " + endDateText);
                 JLabel sortCostLabel = new JLabel(sortCostText);
@@ -856,6 +870,8 @@ public class Main {
                 JButton returnButton = new JButton("Return");
                 filtersPanel.add(typeFilterLabel2);
                 filtersPanel.add(categoryFilterLabel2);
+                filtersPanel.add(minCostLabel);
+                filtersPanel.add(maxCostLabel);
                 filtersPanel.add(startDateLabel);
                 filtersPanel.add(endDateLabel);
                 filtersPanel.add(sortCostLabel);
