@@ -55,9 +55,9 @@ public class ExpenseManager {
         expenses.removeAll(visibleExpenses);
     }
 
-    public double getTotalExpenses() {
+    public double getTotalExpenses(List<Expense> visibleExpenses) {
         double total = 0;
-        for (Expense expense : expenses) {
+        for (Expense expense : visibleExpenses) {
             total += expense.getItemCost();
         }
         return total;

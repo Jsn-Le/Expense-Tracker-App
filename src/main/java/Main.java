@@ -42,13 +42,19 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1400, 1000);
 
-            // Expense/Control/Filter Panel
+            // Expense/Control/Filter/Total Panel
             JPanel expensePanel = new JPanel(new BorderLayout());
             JPanel controlPanel = new JPanel();
             JPanel filterPanel = new JPanel();
-            frame.add(expensePanel, BorderLayout.CENTER);
-            frame.add(controlPanel, BorderLayout.SOUTH);
+            JPanel totalPanel = new JPanel(new GridLayout(1, 4, 10, 0));
+
+            JPanel centerPanel = new JPanel(new BorderLayout());
+            centerPanel.add(expensePanel, BorderLayout.CENTER);
+            centerPanel.add(totalPanel, BorderLayout.SOUTH);
+
             frame.add(filterPanel, BorderLayout.NORTH);
+            frame.add(centerPanel, BorderLayout.CENTER);
+            frame.add(controlPanel, BorderLayout.SOUTH);
 
             // Control Panel Buttons
             JButton createButton = new JButton("Create");
@@ -68,6 +74,18 @@ public class Main {
             JScrollPane scrollPane = new JScrollPane(jTable);
             expensePanel.add(scrollPane);
             expenseJTable.refreshView();
+
+            // Total Panel Labels
+            JLabel dailyLabel = new JLabel("Daily Total: $0.00");
+            JLabel weeklyLabel = new JLabel("Weekly Total: $0.00");
+            JLabel monthlyLabel =  new JLabel("Monthly Total: $0.00");
+            JLabel yearlyLabel = new JLabel("Yearly Total: $0.00");
+            JLabel totalLabel = new JLabel("Total: $0.00");
+            totalPanel.add(dailyLabel);
+            totalPanel.add(weeklyLabel);
+            totalPanel.add(monthlyLabel);
+            totalPanel.add(yearlyLabel);
+            totalPanel.add(totalLabel);
 
             // Control Panel Button Functions
             // createButton
@@ -219,6 +237,11 @@ public class Main {
                         double cost = Double.parseDouble(getCost);
 
                         expenseManager.addExpense(itemName,selectedType, selectedCategory, cost, date);
+                        
+                        List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                        double total = expenseManager.getTotalExpenses(expenses);
+                        totalLabel.setText("Total: $" + total);
+
                         createDialog.dispose();
                         expenseJTable.refreshView();
                     } catch (NumberFormatException z) {
@@ -432,6 +455,11 @@ public class Main {
                         Expense updatedExpense = new Expense(id, itemName, selectedType, selectedCategory, cost, date);
 
                         expenseManager.updateExpense(id, updatedExpense);
+
+                        List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                        double total = expenseManager.getTotalExpenses(expenses);
+                        totalLabel.setText("Total: $" + total);
+
                         updateDialog.dispose();
                         expenseJTable.refreshView();
                     } catch (NumberFormatException z) {
@@ -465,6 +493,11 @@ public class Main {
 
                 if (result == JOptionPane.YES_OPTION) {
                     expenseManager.deleteExpense(id);
+
+                    List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                    double total = expenseManager.getTotalExpenses(expenses);
+                    totalLabel.setText("Total: $" + total);
+
                     expenseJTable.refreshView();
                 } 
             });
@@ -473,6 +506,11 @@ public class Main {
             clearButton.addActionListener(e -> {
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 expenseManager.deleteVisibleExpenses(expenses);
+
+                List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
+                double total = expenseManager.getTotalExpenses(tExpenses);
+                totalLabel.setText("Total: $" + total);
+
                 expenseJTable.refreshView();
             });
 
@@ -805,6 +843,9 @@ public class Main {
 
             // applyFiltersButton
             applyFiltersButton.addActionListener(e -> {
+                List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                double total = expenseManager.getTotalExpenses(expenses);
+                totalLabel.setText("Total: $" + total);
                 expenseJTable.refreshView();
             });
 
@@ -818,6 +859,10 @@ public class Main {
                 categoryFilterBox.removeAllItems();
 
                 expenseJTable.resetFilters();
+
+                List<Expense> expenses = expenseJTable.getVisibleExpenses();
+                double total = expenseManager.getTotalExpenses(expenses);
+                totalLabel.setText("Total: $" + total);
             });
 
             // filterStateButton
