@@ -504,14 +504,28 @@ public class Main {
 
             // clearButton
             clearButton.addActionListener(e -> {
+                int result;
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 expenseManager.deleteVisibleExpenses(expenses);
 
-                List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
-                double total = expenseManager.getTotalExpenses(tExpenses);
-                totalLabel.setText("Total: $" + total);
+                if (expenses.isEmpty()) {
+                    return;
+                } else {
+                    result = JOptionPane.showConfirmDialog(
+                    frame,
+                    "Are you sure you want to delete these logged expenses?",
+                    "Warning",
+                    JOptionPane.YES_NO_OPTION
+                );
+                }
 
-                expenseJTable.refreshView();
+                if (result == JOptionPane.YES_OPTION) {
+                    List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
+                    double total = expenseManager.getTotalExpenses(tExpenses);
+                    totalLabel.setText("Total: $" + total);
+
+                    expenseJTable.refreshView();
+                }
             });
 
             // Filter Panel Buttons/ComboBox
