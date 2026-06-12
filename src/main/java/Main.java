@@ -530,7 +530,6 @@ public class Main {
             clearButton.addActionListener(e -> {
                 int result;
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
-                expenseManager.deleteVisibleExpenses(expenses);
 
                 if (expenses.isEmpty()) {
                     return;
@@ -544,6 +543,8 @@ public class Main {
                 }
 
                 if (result == JOptionPane.YES_OPTION) {
+                    expenseManager.deleteVisibleExpenses(expenses);
+
                     List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
                     double total = expenseManager.getTotalExpenses(tExpenses);
                     double dailyAverage = expenseManager.getDailyAverage(tExpenses);
