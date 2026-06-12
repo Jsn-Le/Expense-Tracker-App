@@ -63,6 +63,19 @@ public class ExpenseManager {
         return total;
     }
 
+    public double getDailyTotal(List<Expense> visibleExpenses) {
+        double total = 0;
+        Set<LocalDate> dates = new HashSet<>();
+        for (Expense expense : visibleExpenses) {
+            total += expense.getItemCost();
+            dates.add(expense.getDate());
+        }
+        int numOfDays = dates.size();
+        if (numOfDays == 0) return 0;
+        double dailyTotal = total / numOfDays;
+        return dailyTotal;
+    }
+
     public List<Expense> filterByDate(List<Expense> list, LocalDate date) {
         List<Expense> eList = new ArrayList<>();
         for (Expense expense : list) {
@@ -100,7 +113,7 @@ public class ExpenseManager {
     }
 
     public Set<String> getAllTypes() {
-        HashSet<String> types = new HashSet<>();
+        Set<String> types = new HashSet<>();
         for (Expense expense : expenses) {
             types.add(expense.getType());
         }
@@ -120,7 +133,7 @@ public class ExpenseManager {
     }
 
     public Set<String> getAllCategories() {
-        HashSet<String> categories = new HashSet<>();
+        Set<String> categories = new HashSet<>();
         for (Expense expense : expenses) {
             categories.add(expense.getCategory());
         }

@@ -240,7 +240,9 @@ public class Main {
                         
                         List<Expense> expenses = expenseJTable.getVisibleExpenses();
                         double total = expenseManager.getTotalExpenses(expenses);
+                        double dailyTotal = expenseManager.getDailyTotal(expenses);
                         totalLabel.setText("Total: $" + total);
+                        dailyLabel.setText("Daily Total: $" + dailyTotal);
 
                         createDialog.dispose();
                         expenseJTable.refreshView();
@@ -458,7 +460,9 @@ public class Main {
 
                         List<Expense> expenses = expenseJTable.getVisibleExpenses();
                         double total = expenseManager.getTotalExpenses(expenses);
+                        double dailyTotal = expenseManager.getDailyTotal(expenses);
                         totalLabel.setText("Total: $" + total);
+                        dailyLabel.setText("Daily Total: $" + dailyTotal);
 
                         updateDialog.dispose();
                         expenseJTable.refreshView();
@@ -496,7 +500,9 @@ public class Main {
 
                     List<Expense> expenses = expenseJTable.getVisibleExpenses();
                     double total = expenseManager.getTotalExpenses(expenses);
+                    double dailyTotal = expenseManager.getDailyTotal(expenses);
                     totalLabel.setText("Total: $" + total);
+                    dailyLabel.setText("Daily Total: $" + dailyTotal);
 
                     expenseJTable.refreshView();
                 } 
@@ -522,7 +528,9 @@ public class Main {
                 if (result == JOptionPane.YES_OPTION) {
                     List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
                     double total = expenseManager.getTotalExpenses(tExpenses);
+                    double dailyTotal = expenseManager.getDailyTotal(tExpenses);
                     totalLabel.setText("Total: $" + total);
+                    dailyLabel.setText("Daily Total: $" + dailyTotal);
 
                     expenseJTable.refreshView();
                 }
@@ -859,7 +867,9 @@ public class Main {
             applyFiltersButton.addActionListener(e -> {
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 double total = expenseManager.getTotalExpenses(expenses);
+                double dailyTotal = expenseManager.getDailyTotal(expenses);
                 totalLabel.setText("Total: $" + total);
+                dailyLabel.setText("Daily Total: $" + dailyTotal);
                 expenseJTable.refreshView();
             });
 
@@ -876,7 +886,9 @@ public class Main {
 
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 double total = expenseManager.getTotalExpenses(expenses);
+                double dailyTotal = expenseManager.getDailyTotal(expenses);
                 totalLabel.setText("Total: $" + total);
+                dailyLabel.setText("Daily Total: $" + dailyTotal);
             });
 
             // filterStateButton
