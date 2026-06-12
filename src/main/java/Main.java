@@ -76,10 +76,10 @@ public class Main {
             expenseJTable.refreshView();
 
             // Total Panel Labels
-            JLabel dailyLabel = new JLabel("Daily Total: $0.00");
-            JLabel weeklyLabel = new JLabel("Weekly Total: $0.00");
-            JLabel monthlyLabel =  new JLabel("Monthly Total: $0.00");
-            JLabel yearlyLabel = new JLabel("Yearly Total: $0.00");
+            JLabel dailyLabel = new JLabel("Daily Average: $0.00");
+            JLabel weeklyLabel = new JLabel("Weekly Average: $0.00");
+            JLabel monthlyLabel =  new JLabel("Monthly Average: $0.00");
+            JLabel yearlyLabel = new JLabel("Yearly Average: $0.00");
             JLabel totalLabel = new JLabel("Total: $0.00");
             totalPanel.add(dailyLabel);
             totalPanel.add(weeklyLabel);
@@ -240,9 +240,15 @@ public class Main {
                         
                         List<Expense> expenses = expenseJTable.getVisibleExpenses();
                         double total = expenseManager.getTotalExpenses(expenses);
-                        double dailyTotal = expenseManager.getDailyTotal(expenses);
+                        double dailyAverage = expenseManager.getDailyAverage(expenses);
+                        double weeklyAverage = expenseManager.getWeeklyAverage(expenses);
+                        double monthlyAverage = expenseManager.getMonthlyAverage(expenses);
+                        double yearlyAverage = expenseManager.getYearlyAverage(expenses);
                         totalLabel.setText("Total: $" + total);
-                        dailyLabel.setText("Daily Total: $" + dailyTotal);
+                        dailyLabel.setText("Daily Average: $" + dailyAverage);
+                        weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                        monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                        yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
 
                         createDialog.dispose();
                         expenseJTable.refreshView();
@@ -460,9 +466,15 @@ public class Main {
 
                         List<Expense> expenses = expenseJTable.getVisibleExpenses();
                         double total = expenseManager.getTotalExpenses(expenses);
-                        double dailyTotal = expenseManager.getDailyTotal(expenses);
+                        double dailyAverage = expenseManager.getDailyAverage(expenses);
+                        double weeklyAverage = expenseManager.getWeeklyAverage(expenses);
+                        double monthlyAverage = expenseManager.getMonthlyAverage(expenses);
+                        double yearlyAverage = expenseManager.getYearlyAverage(expenses);
                         totalLabel.setText("Total: $" + total);
-                        dailyLabel.setText("Daily Total: $" + dailyTotal);
+                        dailyLabel.setText("Daily Average: $" + dailyAverage);
+                        weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                        monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                        yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
 
                         updateDialog.dispose();
                         expenseJTable.refreshView();
@@ -500,9 +512,15 @@ public class Main {
 
                     List<Expense> expenses = expenseJTable.getVisibleExpenses();
                     double total = expenseManager.getTotalExpenses(expenses);
-                    double dailyTotal = expenseManager.getDailyTotal(expenses);
+                    double dailyAverage = expenseManager.getDailyAverage(expenses);
+                    double weeklyAverage = expenseManager.getWeeklyAverage(expenses);
+                    double monthlyAverage = expenseManager.getMonthlyAverage(expenses);
+                    double yearlyAverage = expenseManager.getYearlyAverage(expenses);
                     totalLabel.setText("Total: $" + total);
-                    dailyLabel.setText("Daily Total: $" + dailyTotal);
+                    dailyLabel.setText("Daily Average: $" + dailyAverage);
+                    weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                    monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                    yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
 
                     expenseJTable.refreshView();
                 } 
@@ -528,9 +546,15 @@ public class Main {
                 if (result == JOptionPane.YES_OPTION) {
                     List<Expense> tExpenses = expenseJTable.getVisibleExpenses();
                     double total = expenseManager.getTotalExpenses(tExpenses);
-                    double dailyTotal = expenseManager.getDailyTotal(tExpenses);
+                    double dailyAverage = expenseManager.getDailyAverage(tExpenses);
+                    double weeklyAverage = expenseManager.getWeeklyAverage(tExpenses);
+                    double monthlyAverage = expenseManager.getMonthlyAverage(tExpenses);
+                    double yearlyAverage = expenseManager.getYearlyAverage(tExpenses);
                     totalLabel.setText("Total: $" + total);
-                    dailyLabel.setText("Daily Total: $" + dailyTotal);
+                    dailyLabel.setText("Daily Average: $" + dailyAverage);
+                    weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                    monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                    yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
 
                     expenseJTable.refreshView();
                 }
@@ -867,9 +891,16 @@ public class Main {
             applyFiltersButton.addActionListener(e -> {
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 double total = expenseManager.getTotalExpenses(expenses);
-                double dailyTotal = expenseManager.getDailyTotal(expenses);
+                double dailyAverage = expenseManager.getDailyAverage(expenses);
+                double weeklyAverage = expenseManager.getWeeklyAverage(expenses);
+                double monthlyAverage = expenseManager.getMonthlyAverage(expenses);
+                double yearlyAverage = expenseManager.getYearlyAverage(expenses);
                 totalLabel.setText("Total: $" + total);
-                dailyLabel.setText("Daily Total: $" + dailyTotal);
+                dailyLabel.setText("Daily Average: $" + dailyAverage);
+                weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
+
                 expenseJTable.refreshView();
             });
 
@@ -886,9 +917,15 @@ public class Main {
 
                 List<Expense> expenses = expenseJTable.getVisibleExpenses();
                 double total = expenseManager.getTotalExpenses(expenses);
-                double dailyTotal = expenseManager.getDailyTotal(expenses);
+                double dailyAverage = expenseManager.getDailyAverage(expenses);
+                double weeklyAverage = expenseManager.getWeeklyAverage(expenses);
+                double monthlyAverage = expenseManager.getMonthlyAverage(expenses);
+                double yearlyAverage = expenseManager.getYearlyAverage(expenses);
                 totalLabel.setText("Total: $" + total);
-                dailyLabel.setText("Daily Total: $" + dailyTotal);
+                dailyLabel.setText("Daily Average: $" + dailyAverage);
+                weeklyLabel.setText("Weekly Average: $" + weeklyAverage);
+                monthlyLabel.setText("Monthly Average: $" + monthlyAverage);
+                yearlyLabel.setText("Yearly Average: $" + yearlyAverage);
             });
 
             // filterStateButton

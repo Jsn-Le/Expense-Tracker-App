@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -63,7 +64,7 @@ public class ExpenseManager {
         return total;
     }
 
-    public double getDailyTotal(List<Expense> visibleExpenses) {
+    public double getDailyAverage(List<Expense> visibleExpenses) {
         double total = 0;
         Set<LocalDate> dates = new HashSet<>();
         for (Expense expense : visibleExpenses) {
@@ -72,8 +73,61 @@ public class ExpenseManager {
         }
         int numOfDays = dates.size();
         if (numOfDays == 0) return 0;
-        double dailyTotal = total / numOfDays;
-        return dailyTotal;
+
+        return total / numOfDays;
+    }
+
+    public double getWeeklyAverage(List<Expense> visibleExpenses) {
+        double total = 0;
+        Set<String> weeks = new HashSet<>();
+        for (Expense expense : visibleExpenses) {
+            total += expense.getItemCost();
+            LocalDate date = expense.getDate();
+
+            int year = date.get(IsoFields.WEEK_BASED_YEAR);
+            int week = date.get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+
+            weeks.add(year + "-W" + week);
+        }
+        int numOfWeeks = weeks.size();
+        if (numOfWeeks == 0) return 0;
+        
+        return total / numOfWeeks;
+    }
+
+    public double getMonthlyAverage(List<Expense> visibleExpenses) {
+        double total = 0;
+        Set<String> months = new HashSet<>();
+        for (Expense expense : visibleExpenses) {
+            total += expense.getItemCost();
+            LocalDate date = expense.getDate();
+
+            int year = date.getYear();
+            int month = date.getMonthValue();
+
+            months.add(year + "-M" + month);
+        }
+        int numOfMonths = months.size();
+        if (numOfMonths == 0) return 0;
+
+        return total / numOfMonths;
+    }
+
+    public double getYearlyAverage(List<Expense> visibleExpenses) {
+        double total = 0;
+        Set<String> years = new HashSet<>();
+        for (Expense expense : visibleExpenses) {
+            total += expense.getItemCost();
+            LocalDate date = expense.getDate();
+
+            int year = date.getYear();
+
+            years.add(String.valueOf(year));
+        }
+        int numOfYears = years.size();
+        if (numOfYears == 0) return 0;
+
+        return total / numOfYears;
     }
 
     public List<Expense> filterByDate(List<Expense> list, LocalDate date) {
