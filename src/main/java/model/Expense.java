@@ -1,3 +1,4 @@
+package model;
 import java.time.LocalDate;
 
 public class Expense {
@@ -9,7 +10,7 @@ public class Expense {
     private double itemCost;
     private LocalDate date;
 
-    Expense (int id, String itemName, String type, String category, double itemCost, LocalDate date) {
+    public Expense(int id, String itemName, String type, String category, double itemCost, LocalDate date) {
         this.id = id;
         this.itemName = itemName;
         this.type = type;
@@ -18,47 +19,47 @@ public class Expense {
         this.date = date;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    String getItemName() {
+    public String getItemName() {
         return itemName;
     }
 
-    String getType() {
+    public String getType() {
         return type;
     }
 
-    String getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    double getItemCost() {
+    public double getItemCost() {
         return itemCost;
     }
 
-    LocalDate getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    void setItemName(String itemName) {
+    public void setItemName(String itemName) {
         this.itemName = itemName;
     }
 
-    void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    void setCategory(String category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    void setItemCost(double itemCost) {
+    public void setItemCost(double itemCost) {
         this.itemCost = itemCost;
     }
 
-    void setDate(LocalDate date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

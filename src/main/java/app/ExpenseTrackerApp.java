@@ -1,3 +1,4 @@
+package app;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.time.Instant;
@@ -22,17 +23,11 @@ import javax.swing.SwingUtilities;
 
 import com.toedter.calendar.JCalendar;
 
-public class Main {
+import model.Expense;
+import service.ExpenseService;
+import ui.ExpenseTable;
 
-    // Shared Filter Variables
-    static String selectedFilterType = "";
-    static String selectedFilterCategory = "";
-    static boolean sortCost = true;
-    static boolean sortDate = true;
-    static Double minCost;
-    static Double maxCost;
-    static LocalDate startDate;
-    static LocalDate endDate;
+public class ExpenseTrackerApp {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -67,8 +62,8 @@ public class Main {
             controlPanel.add(clearButton);
 
             // JTable
-            ExpenseManager expenseManager = new ExpenseManager();
-            ExpenseJTable expenseJTable = new ExpenseJTable(expenseManager);
+            ExpenseService expenseManager = new ExpenseService();
+            ExpenseTable expenseJTable = new ExpenseTable(expenseManager);
 
             JTable jTable = new JTable(expenseJTable);
             JScrollPane scrollPane = new JScrollPane(jTable);
