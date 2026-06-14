@@ -3,25 +3,13 @@ package service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import model.Expense;
 
 public class ExpenseFilterService {
 
-    private final List<Expense> expenses = new ArrayList<>();
-
     // Type Filter
-    public Set<String> getAllTypes() {
-        Set<String> types = new HashSet<>();
-        for (Expense expense : expenses) {
-            types.add(expense.getType());
-        }
-        return types;
-    }
-
     public List<Expense> filterByType(List<Expense> list, String type) {
         List<Expense> eList = new ArrayList<>();
         String cleanType = type.trim();
@@ -35,14 +23,6 @@ public class ExpenseFilterService {
     }
 
     // Category Filter
-    public Set<String> getAllCategories() {
-        Set<String> categories = new HashSet<>();
-        for (Expense expense : expenses) {
-            categories.add(expense.getCategory());
-        }
-        return categories;
-    }
-
     public List<Expense> filterByCategory(List<Expense> list, String category) {
         List<Expense> eList = new ArrayList<>();
         String cleanCategory = category.trim();
