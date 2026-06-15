@@ -99,7 +99,7 @@ public class UpdateExpenseDialog extends JDialog {
         categoryBox.setSelectedItem(categoryValue);
 
                 // categoryBox Action Listener
-        typeBox.addActionListener(t -> {
+        typeBox.addActionListener(e -> {
             String select = (String) typeBox.getSelectedItem();
             categoryBox.removeAllItems();
             if ("Personal".equals(select)) {
@@ -140,7 +140,7 @@ public class UpdateExpenseDialog extends JDialog {
         JButton selectDateButton = new JButton("Select Date");
         datePanel.add(selectDateButton);
 
-        selectDateButton.addActionListener(d -> {
+        selectDateButton.addActionListener(e -> {
             JDialog calendarDialog = new JDialog();
             calendarDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             calendarDialog.setSize(450,450);
@@ -158,7 +158,7 @@ public class UpdateExpenseDialog extends JDialog {
             JButton cancelButton = new JButton("Cancel");
             button2Panel.add(cancelButton);
 
-            confirmButton.addActionListener(x -> {
+            confirmButton.addActionListener(a -> {
                 Date date = calendar.getDate();
                 Instant instantDate = date.toInstant();
                 ZonedDateTime zonedDate = instantDate.atZone(ZoneId.systemDefault());
@@ -179,7 +179,7 @@ public class UpdateExpenseDialog extends JDialog {
                 calendarDialog.dispose();
             });
 
-            cancelButton.addActionListener(y -> {
+            cancelButton.addActionListener(a -> {
                 calendarDialog.dispose();
             });
 
@@ -193,7 +193,7 @@ public class UpdateExpenseDialog extends JDialog {
         buttonPanel.add(cancelButton);
 
         // Create Panel Button Functions
-        confirmButton.addActionListener(x -> {
+        confirmButton.addActionListener(e -> {
             try {
                 int id = row.getId();
                 String itemName = itemField.getText();
@@ -229,7 +229,7 @@ public class UpdateExpenseDialog extends JDialog {
             }
         });
 
-        cancelButton.addActionListener(y -> {
+        cancelButton.addActionListener(e -> {
             dispose();
         });
 

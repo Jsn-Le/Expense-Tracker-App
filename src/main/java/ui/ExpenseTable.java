@@ -95,12 +95,14 @@ public class ExpenseTable extends AbstractTableModel {
 
         if (filter.getSortCost()) {
             currentView = expenseFilterService.sortByCostDescending(currentView);
-        } else {
+        } 
+        if (filter.getSortCost() == false) {
             currentView = expenseFilterService.sortByCostAscending(currentView);
         }
         if (filter.getSortDate()) {
             currentView = expenseFilterService.sortByDateDescending(currentView);
-        } else {
+        } 
+        if (filter.getSortDate() == false) {
             currentView = expenseFilterService.sortByDateAscending(currentView);
         }
     }

@@ -64,7 +64,7 @@ public class CreateExpenseDialog extends JDialog {
         String[] personal = {"Housing", "Food", "Transportation", "Entertainment", "Health", "Other"};
         String[] business = {"Payroll & Compensation", "Rent & Utilities", "Advertising & Marketing", "Software & Office Supplies", "Travel & Entertainment", "Other"};
 
-        typeBox.addActionListener(t -> {
+        typeBox.addActionListener(e -> {
             String select = (String) typeBox.getSelectedItem();
             categoryBox.removeAllItems();
             if ("Personal".equals(select)) {
@@ -97,7 +97,7 @@ public class CreateExpenseDialog extends JDialog {
         JButton selectDateButton = new JButton("Select Date");
         datePanel.add(selectDateButton);
 
-        selectDateButton.addActionListener(d -> {
+        selectDateButton.addActionListener(e -> {
             JDialog calendarDialog = new JDialog();
             calendarDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             calendarDialog.setSize(450,450);
@@ -115,7 +115,7 @@ public class CreateExpenseDialog extends JDialog {
             JButton cancelButton = new JButton("Cancel");
             button2Panel.add(cancelButton);
 
-            confirmButton.addActionListener(x -> {
+            confirmButton.addActionListener(a -> {
                 Date date = calendar.getDate();
                 Instant instantDate = date.toInstant();
                 ZonedDateTime zonedDate = instantDate.atZone(ZoneId.systemDefault());
@@ -136,7 +136,7 @@ public class CreateExpenseDialog extends JDialog {
                 calendarDialog.dispose();
             });
 
-            cancelButton.addActionListener(y -> {
+            cancelButton.addActionListener(a -> {
                 calendarDialog.dispose();
             });
 
@@ -150,7 +150,7 @@ public class CreateExpenseDialog extends JDialog {
         buttonPanel.add(cancelButton);
 
         // Create Panel Button Functions
-        confirmButton.addActionListener(x -> {
+        confirmButton.addActionListener(e -> {
             try {
                 String itemName = itemField.getText();
                 String selectedType = (String) typeBox.getSelectedItem();
@@ -184,7 +184,7 @@ public class CreateExpenseDialog extends JDialog {
             }
         });
 
-        cancelButton.addActionListener(y -> {
+        cancelButton.addActionListener(e -> {
             dispose();
         });
 

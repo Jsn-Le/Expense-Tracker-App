@@ -49,7 +49,7 @@ public class ExpenseController {
     }
 
     // Update Totals
-    private void updateTotals() {
+    public void updateTotals() {
         List<Expense> expenses = expenseTable.getVisibleExpenses();
         double total = expenseTotalService.getTotalExpenses(expenses);
         double daily = expenseTotalService.getDailyAverage(expenses);
