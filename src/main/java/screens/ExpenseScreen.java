@@ -9,7 +9,9 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import controller.ExpenseController;
+import model.CurrencyOption;
 import model.ExpenseFilter;
+import service.CurrencyService;
 import service.ExpenseFilterService;
 import service.ExpenseService;
 import service.ExpenseTotalService;
@@ -24,13 +26,15 @@ public class ExpenseScreen {
         SwingUtilities.invokeLater(() -> {
 
             // Services + Model
+            CurrencyService currencyService = new CurrencyService();
             ExpenseService expenseService = new ExpenseService();
             ExpenseFilterService expenseFilterService = new ExpenseFilterService();
-            ExpenseTotalService expenseTotalService = new ExpenseTotalService();
+            CurrencyOption currencyOption = new CurrencyOption(1, currencyService.getSelectedCurrency());
+            ExpenseTotalService expenseTotalService = new ExpenseTotalService(currencyOption);
             ExpenseFilter expenseFilter = new ExpenseFilter("", "", true, true, null, null, null, null);
 
             // TableModel + JTable
-            ExpenseTable expenseTable = new ExpenseTable(expenseFilterService, expenseService, expenseFilter);
+            ExpenseTable expenseTable = new ExpenseTable(expenseFilterService, expenseService, currencyService, currencyOption, expenseFilter);
             JTable jTable = new JTable(expenseTable);
 
             // Total Panel + Controller

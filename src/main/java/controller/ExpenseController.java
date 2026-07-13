@@ -51,11 +51,11 @@ public class ExpenseController {
     // Update Totals
     public void updateTotals() {
         List<Expense> expenses = expenseTable.getVisibleExpenses();
-        double total = expenseTotalService.getTotalExpenses(expenses);
-        double daily = expenseTotalService.getDailyAverage(expenses);
-        double weekly = expenseTotalService.getWeeklyAverage(expenses);
-        double monthly = expenseTotalService.getMonthlyAverage(expenses);
-        double yearly = expenseTotalService.getYearlyAverage(expenses);
+        String total = expenseTotalService.getTotalExpenses(expenses);
+        String daily = expenseTotalService.getDailyAverage(expenses);
+        String weekly = expenseTotalService.getWeeklyAverage(expenses);
+        String monthly = expenseTotalService.getMonthlyAverage(expenses);
+        String yearly = expenseTotalService.getYearlyAverage(expenses);
         totalPanel.updateTotals(daily, weekly, monthly, yearly, total);
     }
 

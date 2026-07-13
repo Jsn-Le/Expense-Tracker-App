@@ -1,13 +1,11 @@
 package app;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import screens.ExpenseScreen;
+import screens.OptionScreen;
 
 public class ExpenseTrackerApp {
 
@@ -22,7 +20,7 @@ public class ExpenseTrackerApp {
 
             // Button Panel
             JPanel buttonPanel = new JPanel();
-            frame.add(buttonPanel, BorderLayout.CENTER);
+            frame.add(buttonPanel);
             JButton openExpenseButton = new JButton("Open Expense");
             JButton createExpenseButton = new JButton("Create Expense");
             buttonPanel.add(openExpenseButton);
@@ -30,12 +28,12 @@ public class ExpenseTrackerApp {
 
             // Button Functions
             openExpenseButton.addActionListener(e -> {
-                frame.dispose();
+                
             });
 
             createExpenseButton.addActionListener(e -> {
                 frame.dispose();
-                ExpenseScreen.main(new String[] {});
+                OptionScreen.main(new String[] {});
             });
 
             frame.setVisible(true);
