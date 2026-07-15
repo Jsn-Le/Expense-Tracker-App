@@ -8,7 +8,7 @@ import model.Expense;
 
 public class ExpenseService {
 
-    private final List<Expense> expenses = new ArrayList<>();
+    private List<Expense> expenses = new ArrayList<>();
     private int nextId = 1;
 
     // Add Expense
@@ -60,6 +60,18 @@ public class ExpenseService {
     // Delete Visible Expenses
     public void deleteVisibleExpenses(List<Expense> visibleExpenses) {
         expenses.removeAll(visibleExpenses);
+    }
+
+    // Load Expenses from File
+    public void loadExpenses(List<Expense> expensesList) {
+        expenses = expensesList;
+        nextId = 1;
+
+        for (Expense expense : expenses) {
+            if (expense.getId() >= nextId) {
+                nextId = expense.getId() + 1;
+            }
+        }
     }
 
 }

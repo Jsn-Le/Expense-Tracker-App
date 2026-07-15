@@ -9,7 +9,7 @@ import model.CurrencyOption;
 public class CurrencyService {
 
     private final List<CurrencyOption> currencies = new ArrayList<>();
-    private static Currency selectedCurrency;
+    private static Currency selectedCurrency = Currency.getInstance("USD");
 
     // Add Currency
     public void addCurrency(int id, Currency currency) {

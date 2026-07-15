@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
 import model.Expense;
+import service.ExpenseFileService;
 import service.ExpenseService;
 import service.ExpenseTotalService;
 import ui.ExpenseTable;
@@ -11,16 +13,30 @@ import ui.TotalPanel;
 
 public class ExpenseController {
 
+    private final ExpenseFileService expenseFileService;
     private final ExpenseService expenseService;
     private final ExpenseTotalService expenseTotalService;
     private final ExpenseTable expenseTable;
     private final TotalPanel totalPanel;
 
-    public ExpenseController(ExpenseService expenseService, ExpenseTotalService expenseTotalService, ExpenseTable expenseTable, TotalPanel totalPanel) {
+    public ExpenseController(ExpenseFileService expenseFileService, ExpenseService expenseService, ExpenseTotalService expenseTotalService, ExpenseTable expenseTable, TotalPanel totalPanel) {
+        this.expenseFileService = expenseFileService;
         this.expenseService = expenseService;
         this.expenseTotalService = expenseTotalService;
         this.expenseTable = expenseTable;
         this.totalPanel = totalPanel;
+    }
+
+    // ExpenseFileService Method Calls
+    public void saveFile(List<Expense> expenses, File file) {
+        expenseFileService.saveFile(expenses, file);
+    }
+
+    public void openFile(File file) {
+        List<Expense> expensesList = expenseFileService.openFile(file);
+        expenseService.loadExpenses(expensesList);
+        expenseTable.refreshView();
+        updateTotals();
     }
 
     // ExpenseService Method Calls

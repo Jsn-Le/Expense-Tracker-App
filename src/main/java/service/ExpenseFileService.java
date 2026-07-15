@@ -15,6 +15,7 @@ public class ExpenseFileService {
     
     private static final Logger LOGGER = Logger.getLogger(ExpenseFileService.class.getName());
 
+    // Save File
     public void saveFile(List<Expense> expenses, File file) {
         try (ObjectOutputStream save = new ObjectOutputStream(new FileOutputStream(file))) {
             save.writeObject(expenses);
@@ -23,6 +24,7 @@ public class ExpenseFileService {
         }
     }
 
+    // Open File
     public List<Expense> openFile(File file) {
         try (ObjectInputStream open = new ObjectInputStream(new FileInputStream(file))) {
             Object expensesObject = open.readObject();

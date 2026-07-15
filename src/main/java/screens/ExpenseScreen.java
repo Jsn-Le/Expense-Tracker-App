@@ -12,12 +12,14 @@ import controller.ExpenseController;
 import model.CurrencyOption;
 import model.ExpenseFilter;
 import service.CurrencyService;
+import service.ExpenseFileService;
 import service.ExpenseFilterService;
 import service.ExpenseService;
 import service.ExpenseTotalService;
 import ui.ControlPanel;
 import ui.ExpenseTable;
 import ui.FilterPanel;
+import ui.MenuBar;
 import ui.TotalPanel;
 
 public class ExpenseScreen {
@@ -27,6 +29,7 @@ public class ExpenseScreen {
 
             // Services + Model
             CurrencyService currencyService = new CurrencyService();
+            ExpenseFileService expenseFileService = new ExpenseFileService();
             ExpenseService expenseService = new ExpenseService();
             ExpenseFilterService expenseFilterService = new ExpenseFilterService();
             CurrencyOption currencyOption = new CurrencyOption(1, currencyService.getSelectedCurrency());
@@ -39,7 +42,7 @@ public class ExpenseScreen {
 
             // Total Panel + Controller
             TotalPanel totalPanel = new TotalPanel();
-            ExpenseController expenseController = new ExpenseController(expenseService, expenseTotalService, expenseTable, totalPanel);
+            ExpenseController expenseController = new ExpenseController(expenseFileService, expenseService, expenseTotalService, expenseTable, totalPanel);
             
             // Control + Filter Panels
             ControlPanel controlPanel = new ControlPanel(jTable, expenseTable, expenseController);
@@ -50,10 +53,16 @@ public class ExpenseScreen {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1400, 1000);
 
+            // Menu Bar 
+            MenuBar menuBar = new MenuBar(frame, expenseController);
+            frame.setJMenuBar(menuBar);
+
+            // Table
             JScrollPane scrollPane = new JScrollPane(jTable);
             JPanel expensePanel = new JPanel(new BorderLayout());
             expensePanel.add(scrollPane);
 
+            // Panels
             JPanel centerPanel = new JPanel(new BorderLayout());
             centerPanel.add(expensePanel, BorderLayout.CENTER);
             centerPanel.add(totalPanel, BorderLayout.SOUTH);

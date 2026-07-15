@@ -26,6 +26,7 @@ import model.Expense;
 public class UpdateExpenseDialog extends JDialog {
 
     public UpdateExpenseDialog(JTable jTable, ExpenseTable expenseTable, ExpenseController expenseController) {
+        
         // Fetch Data Values
         int rowIndex = jTable.getSelectedRow();
         if (rowIndex == -1) return;
