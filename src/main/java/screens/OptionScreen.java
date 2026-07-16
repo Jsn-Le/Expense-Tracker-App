@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -34,8 +35,10 @@ public class OptionScreen {
             JPanel buttonPanel = new JPanel();
             frame.add(dropdownPanel, BorderLayout.CENTER);
             frame.add(buttonPanel, BorderLayout.SOUTH);
+            JLabel currencyLabel = new JLabel("Select Currency: ");
             JButton confirmButton = new JButton("Confirm");
             JButton returnButton = new JButton("Return");
+            dropdownPanel.add(currencyLabel);
             buttonPanel.add(confirmButton);
             buttonPanel.add(returnButton);
 

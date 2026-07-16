@@ -64,9 +64,13 @@ public class ExpenseService {
 
     // Load Expenses from File
     public void loadExpenses(List<Expense> expensesList) {
+        if (expensesList == null) {
+            return;
+        }
+
         expenses = expensesList;
         nextId = 1;
-
+        
         for (Expense expense : expenses) {
             if (expense.getId() >= nextId) {
                 nextId = expense.getId() + 1;

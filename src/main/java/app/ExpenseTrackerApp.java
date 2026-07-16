@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -62,10 +63,20 @@ public class ExpenseTrackerApp {
 
                 int result = fileChooser.showOpenDialog(openExpenseButton);
 
-                if (result == JFileChooser.APPROVE_OPTION) {
+                            if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                expenseController.openFile(selectedFile);
+
+                if (!expenseController.openFile(selectedFile)) {
+                    JOptionPane.showMessageDialog(
+                        frame,
+                        "The selected file is not a valid expense file",
+                        "Open File Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                 }
+
+                expenseController.openFile(selectedFile);
+            }
             });
 
             createExpenseButton.addActionListener(e -> {

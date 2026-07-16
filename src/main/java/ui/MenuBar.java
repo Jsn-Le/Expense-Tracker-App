@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import app.ExpenseTrackerApp;
 import controller.ExpenseController;
@@ -46,6 +47,16 @@ public class MenuBar extends JMenuBar {
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
+
+                if (!expenseController.openFile(selectedFile)) {
+                    JOptionPane.showMessageDialog(
+                        fileMenu,
+                        "The selected file is not a valid expense file",
+                        "Open File Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+
                 expenseController.openFile(selectedFile);
             }
         });

@@ -32,11 +32,18 @@ public class ExpenseController {
         expenseFileService.saveFile(expenses, file);
     }
 
-    public void openFile(File file) {
+    public boolean openFile(File file) {
         List<Expense> expensesList = expenseFileService.openFile(file);
+
+        if (expensesList == null) {
+            return false;
+        }
+
         expenseService.loadExpenses(expensesList);
         expenseTable.refreshView();
         updateTotals();
+
+        return true;
     }
 
     // ExpenseService Method Calls
