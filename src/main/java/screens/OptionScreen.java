@@ -14,16 +14,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import app.ExpenseTrackerApp;
+import controller.ExpenseController;
+import model.ExpenseFilter;
 import service.CurrencyService;
+import ui.ExpenseTable;
+import ui.TotalPanel;
 
 public class OptionScreen {
 
-    public static void main(String[] args) {
+    public static void open(ExpenseController expenseController, ExpenseTable expenseTable, TotalPanel totalPanel, ExpenseFilter expenseFilter, CurrencyService currencyService) {
 
         SwingUtilities.invokeLater(() -> {
-
-            // Model
-            CurrencyService currencyService = new CurrencyService();
 
             // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
@@ -65,7 +66,7 @@ public class OptionScreen {
                 currencyService.addCurrency(1, selectedCurrency);
 
                 frame.dispose();
-                ExpenseScreen.main(new String[] {});
+                ExpenseScreen.open(expenseController, expenseTable, totalPanel, expenseFilter);
             });
 
             returnButton.addActionListener(e -> {

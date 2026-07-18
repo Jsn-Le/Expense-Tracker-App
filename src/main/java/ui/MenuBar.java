@@ -1,15 +1,19 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.io.File;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
-import app.ExpenseTrackerApp;
 import controller.ExpenseController;
 
 public class MenuBar extends JMenuBar {
@@ -35,7 +39,46 @@ public class MenuBar extends JMenuBar {
 
         // New File Function
         newFile.addActionListener(e -> {
+            if (!expenseController.saveFile()) {
+                JDialog saveOption = new JDialog(frame, true);
 
+                saveOption.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                saveOption.setSize(625, 100);
+
+                JPanel labelPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
+
+                saveOption.add(labelPanel, BorderLayout.NORTH);
+                saveOption.add(buttonPanel, BorderLayout.SOUTH);
+
+                JLabel saveLabel = new JLabel("Your existing expenses are not saved to a file... Would you like to save it to a file before creating a new file?");
+                JButton yesButton = new JButton("Yes");
+                JButton noButton = new JButton("No");
+
+                labelPanel.add(saveLabel);
+                buttonPanel.add(yesButton);
+                buttonPanel.add(noButton);
+
+                yesButton.addActionListener(a -> {
+                    saveAsFile.doClick();
+
+                    if (expenseController.getCurrentFile() != null) {
+                        saveOption.dispose();
+                        expenseController.newFile();
+                    } else {
+                        saveOption.dispose();
+                    }
+                });
+
+                noButton.addActionListener(a -> {
+                    saveOption.dispose();
+                    expenseController.newFile();
+                });
+
+                saveOption.setVisible(true);
+            } else {
+                expenseController.newFile();
+            }
         });
 
         // Open File Function
@@ -56,25 +99,33 @@ public class MenuBar extends JMenuBar {
                         JOptionPane.ERROR_MESSAGE
                     );
                 }
-
-                expenseController.openFile(selectedFile);
             }
         });
 
         // Save Function
         saveFile.addActionListener(e -> {
-            
+            if (!expenseController.saveFile()) {
+                saveAsFile.doClick();
+            }
         });
 
         // Save As Function
         saveAsFile.addActionListener(e -> {
+            // JFileChooser
+            JFileChooser fileChooser = new JFileChooser();
             
+            int result = fileChooser.showSaveDialog(fileMenu);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+
+                expenseController.saveAsFile(selectedFile);
+            }
         });
 
         // Exit Function
         exit.addActionListener(e -> {
             frame.dispose();
-            ExpenseTrackerApp.main(new String[] {});
         });
     }
 

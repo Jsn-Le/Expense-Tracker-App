@@ -27,8 +27,22 @@ public class ExpenseController {
         this.totalPanel = totalPanel;
     }
 
+    private File currentFile = null;
+
     // ExpenseFileService Method Calls
-    public void saveFile(List<Expense> expenses, File file) {
+    public File getCurrentFile() {
+        return currentFile;
+    }
+
+    public void newFile() {
+        expenseTable.resetFilters();
+        deleteVisibleExpenses(expenseService.findAllExpenses());
+        currentFile = null;
+    }
+
+    public void saveAsFile(File file) {
+        List<Expense> expenses = expenseService.findAllExpenses();
+        currentFile = file;
         expenseFileService.saveFile(expenses, file);
     }
 
@@ -39,9 +53,21 @@ public class ExpenseController {
             return false;
         }
 
+        currentFile = file;
         expenseService.loadExpenses(expensesList);
         expenseTable.refreshView();
         updateTotals();
+
+        return true;
+    }
+
+    public boolean saveFile() {
+        if (currentFile == null) {
+            return false;
+        }
+
+        List<Expense> expenses = expenseService.findAllExpenses();
+        expenseFileService.saveFile(expenses, currentFile);
 
         return true;
     }

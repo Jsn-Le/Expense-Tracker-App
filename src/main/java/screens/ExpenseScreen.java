@@ -9,13 +9,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import controller.ExpenseController;
-import model.CurrencyOption;
 import model.ExpenseFilter;
-import service.CurrencyService;
-import service.ExpenseFileService;
-import service.ExpenseFilterService;
-import service.ExpenseService;
-import service.ExpenseTotalService;
 import ui.ControlPanel;
 import ui.ExpenseTable;
 import ui.FilterPanel;
@@ -24,25 +18,11 @@ import ui.TotalPanel;
 
 public class ExpenseScreen {
 
-    public static void main(String[] args) {
+    public static void open(ExpenseController expenseController, ExpenseTable expenseTable, TotalPanel totalPanel, ExpenseFilter expenseFilter) {
         SwingUtilities.invokeLater(() -> {
 
-            // Services + Model
-            CurrencyService currencyService = new CurrencyService();
-            ExpenseFileService expenseFileService = new ExpenseFileService();
-            ExpenseService expenseService = new ExpenseService();
-            ExpenseFilterService expenseFilterService = new ExpenseFilterService();
-            CurrencyOption currencyOption = new CurrencyOption(1, currencyService.getSelectedCurrency());
-            ExpenseTotalService expenseTotalService = new ExpenseTotalService(currencyOption);
-            ExpenseFilter expenseFilter = new ExpenseFilter("", "", true, true, null, null, null, null);
-
             // TableModel + JTable
-            ExpenseTable expenseTable = new ExpenseTable(expenseFilterService, expenseService, currencyService, currencyOption, expenseFilter);
             JTable jTable = new JTable(expenseTable);
-
-            // Total Panel + Controller
-            TotalPanel totalPanel = new TotalPanel();
-            ExpenseController expenseController = new ExpenseController(expenseFileService, expenseService, expenseTotalService, expenseTable, totalPanel);
             
             // Control + Filter Panels
             ControlPanel controlPanel = new ControlPanel(jTable, expenseTable, expenseController);

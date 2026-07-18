@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import controller.ExpenseController;
 import model.CurrencyOption;
 import model.ExpenseFilter;
+import screens.ExpenseScreen;
 import screens.OptionScreen;
 import service.CurrencyService;
 import service.ExpenseFileService;
@@ -63,25 +64,26 @@ public class ExpenseTrackerApp {
 
                 int result = fileChooser.showOpenDialog(openExpenseButton);
 
-                            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
 
-                if (!expenseController.openFile(selectedFile)) {
-                    JOptionPane.showMessageDialog(
-                        frame,
-                        "The selected file is not a valid expense file",
-                        "Open File Error",
-                        JOptionPane.ERROR_MESSAGE
-                    );
+                    if (!expenseController.openFile(selectedFile)) {
+                        JOptionPane.showMessageDialog(
+                            frame,
+                            "The selected file is not a valid expense file",
+                            "Open File Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+                    frame.dispose();
+                    ExpenseScreen.open(expenseController, expenseTable, totalPanel, expenseFilter);
                 }
-
-                expenseController.openFile(selectedFile);
-            }
             });
 
             createExpenseButton.addActionListener(e -> {
                 frame.dispose();
-                OptionScreen.main(new String[] {});
+                OptionScreen.open(expenseController, expenseTable, totalPanel, expenseFilter, currencyService);
             });
 
             frame.setVisible(true);
