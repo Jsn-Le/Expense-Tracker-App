@@ -4,20 +4,18 @@ import java.util.Currency;
 
 public class CurrencyOption {
 
-    final int id;
-    private final Currency currency;
+    private Currency currency = null;
 
-    public CurrencyOption(int id, Currency currency) {
-        this.id = id;
+    public CurrencyOption(Currency currency) {
         this.currency = currency;
     } 
- 
-    public int getId() {
-        return id;
-    }
 
     public Currency getCurrency() {
         return currency;
+    }
+
+    public  void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
 }

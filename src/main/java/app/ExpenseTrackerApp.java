@@ -29,12 +29,12 @@ public class ExpenseTrackerApp {
         SwingUtilities.invokeLater(() -> {
 
             // Services + Model
-            CurrencyService currencyService = new CurrencyService();
             ExpenseFileService expenseFileService = new ExpenseFileService();
             ExpenseService expenseService = new ExpenseService();
             ExpenseFilterService expenseFilterService = new ExpenseFilterService();
-            CurrencyOption currencyOption = new CurrencyOption(1, currencyService.getSelectedCurrency());
-            ExpenseTotalService expenseTotalService = new ExpenseTotalService(currencyOption);
+            CurrencyOption currencyOption = new CurrencyOption(null);
+            CurrencyService currencyService = new CurrencyService(currencyOption);
+            ExpenseTotalService expenseTotalService = new ExpenseTotalService(currencyService);
             ExpenseFilter expenseFilter = new ExpenseFilter("", "", true, true, null, null, null, null);
 
             // TableModel + JTable

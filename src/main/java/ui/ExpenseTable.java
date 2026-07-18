@@ -18,6 +18,7 @@ public class ExpenseTable extends AbstractTableModel {
     private final ExpenseFilterService expenseFilterService;
     private final ExpenseService expenseService;
     private final ExpenseFilter filter;
+    private final CurrencyService currencyService;
     private List<Expense> currentView;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
@@ -27,8 +28,12 @@ public class ExpenseTable extends AbstractTableModel {
         this.expenseFilterService = expenseFilterService;
         this.expenseService = expenseService;
         this.filter = filter;
+        this.currencyService = currencyService;
         currentView = expenseService.findAllExpenses();
-        currencyFormatter.setCurrency(currencyOption.getCurrency());
+
+        if (currencyOption != null && currencyOption.getCurrency() != null) {
+            currencyFormatter.setCurrency(currencyService.getSelectedCurrency());
+        }
     }
 
     @Override
@@ -80,6 +85,9 @@ public class ExpenseTable extends AbstractTableModel {
 
     public void refreshView() {
         applyFilters();
+        if (currencyService != null && currencyService.getSelectedCurrency() != null) {
+            currencyFormatter.setCurrency(currencyService.getSelectedCurrency());
+        }
         fireTableDataChanged();
     }
 

@@ -1,19 +1,22 @@
 package service;
 
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 
 import model.CurrencyOption;
 
 public class CurrencyService {
 
-    private final List<CurrencyOption> currencies = new ArrayList<>();
-    private static Currency selectedCurrency = Currency.getInstance("USD");
+    private final CurrencyOption currencyOption;
+
+    public CurrencyService(CurrencyOption currencyOption) {
+        this.currencyOption = currencyOption;
+    }
+
+    private Currency selectedCurrency = Currency.getInstance("USD");
 
     // Add Currency
-    public void addCurrency(int id, Currency currency) {
-        currencies.add(new CurrencyOption(id, currency));
+    public void selectCurrency(Currency currency) {
+        currencyOption.setCurrency(currency);
         selectedCurrency = currency;
     }
 

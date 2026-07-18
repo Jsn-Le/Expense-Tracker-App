@@ -63,7 +63,8 @@ public class OptionScreen {
             // Button Functions
             confirmButton.addActionListener(e -> {
                 Currency selectedCurrency = (Currency) currencyDropdown.getSelectedItem();
-                currencyService.addCurrency(1, selectedCurrency);
+                currencyService.selectCurrency(selectedCurrency);
+                expenseTable.refreshView();
 
                 frame.dispose();
                 ExpenseScreen.open(expenseController, expenseTable, totalPanel, expenseFilter);

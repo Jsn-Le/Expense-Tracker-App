@@ -7,15 +7,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.CurrencyOption;
 import model.Expense;
 
 public class ExpenseTotalService {
 
-    private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+    private final CurrencyService currencyService;
 
-    public ExpenseTotalService(CurrencyOption currencyOption) {
-        currencyFormatter.setCurrency(currencyOption.getCurrency());
+    public ExpenseTotalService(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+    }
+
+    private NumberFormat getCurrencyFormatter() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        if (currencyService != null && currencyService.getSelectedCurrency() != null) {
+            formatter.setCurrency(currencyService.getSelectedCurrency());
+        }
+        return formatter;
     }
 
     // Total
@@ -24,7 +31,7 @@ public class ExpenseTotalService {
         for (Expense expense : visibleExpenses) {
             total += expense.getItemCost();
         }
-        return currencyFormatter.format(total);
+        return getCurrencyFormatter().format(total);
     }
 
     // Daily Average
@@ -36,9 +43,9 @@ public class ExpenseTotalService {
             dates.add(expense.getDate());
         }
         int numOfDays = dates.size();
-        if (numOfDays == 0) return currencyFormatter.format(0);
+        if (numOfDays == 0) return getCurrencyFormatter().format(0);
 
-        return currencyFormatter.format(total / numOfDays);
+        return getCurrencyFormatter().format(total / numOfDays);
     }
 
     // Weekly Average
@@ -55,9 +62,9 @@ public class ExpenseTotalService {
             weeks.add(year + "-W" + week);
         }
         int numOfWeeks = weeks.size();
-        if (numOfWeeks == 0) return currencyFormatter.format(0);
+        if (numOfWeeks == 0) return getCurrencyFormatter().format(0);
         
-        return currencyFormatter.format(total / numOfWeeks);
+        return getCurrencyFormatter().format(total / numOfWeeks);
     }
 
     // Monthly Average
@@ -74,9 +81,9 @@ public class ExpenseTotalService {
             months.add(year + "-M" + month);
         }
         int numOfMonths = months.size();
-        if (numOfMonths == 0) return currencyFormatter.format(0);
+        if (numOfMonths == 0) return getCurrencyFormatter().format(0);
 
-        return currencyFormatter.format(total / numOfMonths);
+        return getCurrencyFormatter().format(total / numOfMonths);
     }
 
     // Yearly Average
@@ -92,9 +99,9 @@ public class ExpenseTotalService {
             years.add(String.valueOf(year));
         }
         int numOfYears = years.size();
-        if (numOfYears == 0) return currencyFormatter.format(0);
+        if (numOfYears == 0) return getCurrencyFormatter().format(0);
 
-        return currencyFormatter.format(total / numOfYears);
+        return getCurrencyFormatter().format(total / numOfYears);
     }
 
 }
