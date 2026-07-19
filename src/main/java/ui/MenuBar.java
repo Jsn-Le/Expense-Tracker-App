@@ -52,8 +52,8 @@ public class MenuBar extends JMenuBar {
                 saveOption.add(buttonPanel, BorderLayout.SOUTH);
 
                 JLabel saveLabel = new JLabel("Your existing expenses are not saved to a file... Would you like to save it to a file before creating a new file?");
-                JButton yesButton = new JButton("Yes");
-                JButton noButton = new JButton("No");
+                JButton yesButton = ButtonStyles.createPrimaryButton("Yes");
+                JButton noButton = ButtonStyles.createSecondaryButton("No");
 
                 labelPanel.add(saveLabel);
                 buttonPanel.add(yesButton);
