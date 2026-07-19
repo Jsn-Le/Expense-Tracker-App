@@ -1,12 +1,15 @@
 package ui;
 
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import model.CurrencyOption;
 import model.Expense;
 import model.ExpenseFilter;
+import service.CurrencyService;
 import service.ExpenseFilterService;
 import service.ExpenseService;
 
@@ -15,14 +18,22 @@ public class ExpenseTable extends AbstractTableModel {
     private final ExpenseFilterService expenseFilterService;
     private final ExpenseService expenseService;
     private final ExpenseFilter filter;
+    private final CurrencyService currencyService;
     private List<Expense> currentView;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
 
-    public ExpenseTable(ExpenseFilterService expenseFilterService, ExpenseService expenseService, ExpenseFilter filter) {
+    public ExpenseTable(ExpenseFilterService expenseFilterService, ExpenseService expenseService, CurrencyService currencyService, 
+                        CurrencyOption currencyOption, ExpenseFilter filter) {
         this.expenseFilterService = expenseFilterService;
         this.expenseService = expenseService;
         this.filter = filter;
+        this.currencyService = currencyService;
         currentView = expenseService.findAllExpenses();
+
+        if (currencyOption != null && currencyOption.getCurrency() != null) {
+            currencyFormatter.setCurrency(currencyService.getSelectedCurrency());
+        }
     }
 
     @Override
@@ -55,9 +66,9 @@ public class ExpenseTable extends AbstractTableModel {
             case 0 -> expense.getItemName();
             case 1 -> expense.getType();
             case 2 -> expense.getCategory();
-            case 3 -> expense.getItemCost();
+            case 3 -> currencyFormatter.format(expense.getItemCost());
             case 4 -> expense.getDate() != null
-                        ? expense.getDate().format(formatter)
+                        ? expense.getDate().format(dateFormatter)
                         : "";
             default -> null;
         };
@@ -74,6 +85,9 @@ public class ExpenseTable extends AbstractTableModel {
 
     public void refreshView() {
         applyFilters();
+        if (currencyService != null && currencyService.getSelectedCurrency() != null) {
+            currencyFormatter.setCurrency(currencyService.getSelectedCurrency());
+        }
         fireTableDataChanged();
     }
 

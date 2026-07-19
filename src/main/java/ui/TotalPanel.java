@@ -16,11 +16,11 @@ public class TotalPanel extends JPanel {
     public TotalPanel() {
         setLayout(new GridLayout(1, 5, 10, 0));
 
-        dailyLabel = new JLabel("Daily Average: $0.00");
-        weeklyLabel = new JLabel("Weekly Average: $0.00");
-        monthlyLabel = new JLabel("Monthly Average: $0.00");
-        yearlyLabel = new JLabel("Yearly Average: $0.00");
-        totalLabel = new JLabel("Total: $0.00");
+        dailyLabel = new JLabel("Daily Average:");
+        weeklyLabel = new JLabel("Weekly Average:");
+        monthlyLabel = new JLabel("Monthly Average:");
+        yearlyLabel = new JLabel("Yearly Average:");
+        totalLabel = new JLabel("Total:");
 
         add(dailyLabel);
         add(weeklyLabel);
@@ -29,12 +29,12 @@ public class TotalPanel extends JPanel {
         add(totalLabel);
     }
 
-    public void updateTotals(double daily, double weekly, double monthly, double yearly, double total) {
-        totalLabel.setText("Total: $" + total);
-        dailyLabel.setText("Daily Average: $" + daily);
-        weeklyLabel.setText("Weekly Average: $" + weekly);
-        monthlyLabel.setText("Monthly Average: $" + monthly);
-        yearlyLabel.setText("Yearly Average: $" + yearly);
+    public void updateTotals(String daily, String weekly, String monthly, String yearly, String total) {
+        totalLabel.setText("Total: " + total);
+        dailyLabel.setText("Daily Average: " + daily);
+        weeklyLabel.setText("Weekly Average: " + weekly);
+        monthlyLabel.setText("Monthly Average: " + monthly);
+        yearlyLabel.setText("Yearly Average: " + yearly);
     }
 
 }

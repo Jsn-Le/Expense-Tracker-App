@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Expense {
+public class Expense implements Serializable {
 
     final int id;
     private String itemName;
