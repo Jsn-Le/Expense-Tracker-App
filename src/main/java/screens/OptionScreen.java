@@ -48,7 +48,6 @@ public class OptionScreen {
                 Currency.getInstance("USD"),
                 Currency.getInstance("EUR"),
                 Currency.getInstance("GBP"),
-                Currency.getInstance("EUR"),
                 Currency.getInstance("JPY"),
                 Currency.getInstance("CAD"),
                 Currency.getInstance("AUD"),

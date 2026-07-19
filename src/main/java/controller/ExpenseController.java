@@ -2,9 +2,12 @@ package controller;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.List;
 
 import model.Expense;
+import model.ExpenseFileData;
+import service.CurrencyService;
 import service.ExpenseFileService;
 import service.ExpenseService;
 import service.ExpenseTotalService;
@@ -13,13 +16,15 @@ import ui.TotalPanel;
 
 public class ExpenseController {
 
+    private final CurrencyService currencyService;
     private final ExpenseFileService expenseFileService;
     private final ExpenseService expenseService;
     private final ExpenseTotalService expenseTotalService;
     private final ExpenseTable expenseTable;
     private final TotalPanel totalPanel;
 
-    public ExpenseController(ExpenseFileService expenseFileService, ExpenseService expenseService, ExpenseTotalService expenseTotalService, ExpenseTable expenseTable, TotalPanel totalPanel) {
+    public ExpenseController(CurrencyService currencyService, ExpenseFileService expenseFileService, ExpenseService expenseService, ExpenseTotalService expenseTotalService, ExpenseTable expenseTable, TotalPanel totalPanel) {
+        this.currencyService = currencyService;
         this.expenseFileService = expenseFileService;
         this.expenseService = expenseService;
         this.expenseTotalService = expenseTotalService;
@@ -42,19 +47,22 @@ public class ExpenseController {
 
     public void saveAsFile(File file) {
         List<Expense> expenses = expenseService.findAllExpenses();
+        Currency currency = currencyService.getSelectedCurrency();
+        ExpenseFileData expenseFileData = new ExpenseFileData(expenses, currency);
         currentFile = file;
-        expenseFileService.saveFile(expenses, file);
+        expenseFileService.saveFile(expenseFileData, file);
     }
 
     public boolean openFile(File file) {
-        List<Expense> expensesList = expenseFileService.openFile(file);
+        ExpenseFileData expenseFileData = expenseFileService.openFile(file);
 
-        if (expensesList == null) {
+        if (expenseFileData == null) {
             return false;
         }
 
         currentFile = file;
-        expenseService.loadExpenses(expensesList);
+        currencyService.selectCurrency(expenseFileData.getCurrencyData());
+        expenseService.loadExpenses(expenseFileData.getExpenseData());
         expenseTable.refreshView();
         updateTotals();
 
@@ -67,7 +75,9 @@ public class ExpenseController {
         }
 
         List<Expense> expenses = expenseService.findAllExpenses();
-        expenseFileService.saveFile(expenses, currentFile);
+        Currency currency = currencyService.getSelectedCurrency();
+        ExpenseFileData expenseFileData = new ExpenseFileData(expenses, currency);
+        expenseFileService.saveFile(expenseFileData, currentFile);
 
         return true;
     }

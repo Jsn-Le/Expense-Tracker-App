@@ -42,7 +42,7 @@ public class ExpenseTrackerApp {
 
             // Total Panel + Controller
             TotalPanel totalPanel = new TotalPanel();
-            ExpenseController expenseController = new ExpenseController(expenseFileService, expenseService, expenseTotalService, expenseTable, totalPanel);
+            ExpenseController expenseController = new ExpenseController(currencyService, expenseFileService, expenseService, expenseTotalService, expenseTable, totalPanel);
 
             // Initial Frame
             JFrame frame = new JFrame("Expense Tracker");
