@@ -120,11 +120,5 @@ public class OptionScreen {
         });
     }
 
-    private static JButton createStyledButton(String text) {
-        JButton button = ButtonStyles.createPrimaryButton(text);
-        button.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        button.setPreferredSize(new Dimension(115, 40));
-        return button;
-    }
 }
 

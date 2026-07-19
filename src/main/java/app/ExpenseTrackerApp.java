@@ -3,7 +3,6 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.File;
@@ -133,10 +132,4 @@ public class ExpenseTrackerApp {
         });
     }
 
-    private static JButton createStyledButton(String text) {
-        JButton button = ButtonStyles.createPrimaryButton(text);
-        button.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        button.setPreferredSize(new Dimension(135, 42));
-        return button;
-    }
 }
