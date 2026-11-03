@@ -40,7 +40,7 @@ Or open the project in IntelliJ or VS Code and run `app/ExpenseTrackerApp.java`.
 
 | Start Screen | Choose Currency | Create Expense |
 |---|---|---|
-| <img width="260" alt="Start screen" src="https://github.com/user-attachments/assets/7a4ceb30-cd68-4e50-a20a-784d7d3449f8" /> | <img width="260" alt="Currency screen" src="https://github.com/user-attachments/assets/d1a1ff98-e045-428f-b54f-9e3488adce77" /> | <img width="260" alt="Create expense dialog" src="https://github.com/user-attachments/assets/6606ec09-e1b3-47e9-81da-48c6addf8d7d" /> |
+| <img width="260" alt="Start screen" src="https://github.com/user-attachments/assets/7a4ceb30-cd68-4e50-a20a-784d7d3449f8" /> | <img width="260" alt="Currency screen" src="https://github.com/user-attachments/assets/b225894b-9cea-47c7-b10a-5f3f6fb47334" /> | <img width="260" alt="Create expense dialog" src="https://github.com/user-attachments/assets/6606ec09-e1b3-47e9-81da-48c6addf8d7d" /> |
 
 ## What I'd Add Next
 - Real currency conversion (right now currency only changes how amounts are displayed)
